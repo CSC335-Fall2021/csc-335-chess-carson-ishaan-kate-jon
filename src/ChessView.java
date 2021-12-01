@@ -103,11 +103,13 @@ public class ChessView extends Application {
 		VBox vbox = new VBox();
 		
 		Label label1 = new Label("  Enter your color:");
-		TextField textfield1 = new TextField("Hex value or text");
+		TextField textfield1 = new TextField("");
+		textfield1.setPromptText("Hex value or text");
 		textfield1.setMaxWidth(200);
 		
 		Label label2 = new Label("  Enter opponent's color:");
-		TextField textfield2 = new TextField("Hex value or text");
+		TextField textfield2 = new TextField("");
+		textfield2.setPromptText("Hex value or text");
 		textfield2.setMaxWidth(200);
 		
 		Button button = new Button("Change Color");
