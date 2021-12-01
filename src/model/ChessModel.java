@@ -62,27 +62,29 @@ public class ChessModel {
 		
 		public String getFenString(Piece[][] curboard) {
 			String result = "";
-			
-			for (int i=0; i < 7; i++) {
-				int count = 0;
-				for (int j=0; j < 7; j++) {
-					if (curboard[j][i].getFenRep() == ' ') {
+			int count = 0;
+			for (int row = 0; row < 8; row++) {
+				count = 0;
+				for (int col = 0; col < 8; col++) {
+					// If slot is space
+					if (curboard[row][col].getFenRep() == ' ') {
 						count++;
-					}
-					else {
+					} else {
+						// Else is a piece 
 						if (count != 0) {
 							result += count;
+							count = 0;
 						}
-						count = 0;
-						result += curboard[j][i].getFenRep();
+						result += curboard[row][col].getFenRep();
 					}
 					if (count == 8) {
 						result += count;
 					}
 				}
-				result += "/";
+				if (row < 7) {
+					result += '/';
+				}
 			}
-			
 			return result;
 		}
 }
