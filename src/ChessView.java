@@ -128,30 +128,30 @@ public class ChessView extends Application {
 
 	private void ChangeColors(String text1, String text2, Stage stage) {
 		try {
-		Color temp1;
-		if(text1.contains("0x")) {
-			temp1 = Color.web(text1);
-		}else{
-			text1.toUpperCase();
-			temp1 = Color.valueOf(text1);
+			Color temp1;
+			if(text1.contains("0x")) {
+				temp1 = Color.web(text1);
+			}else{
+				text1.toUpperCase();
+				temp1 = Color.valueOf(text1);
+			}
+			color1 = temp1;
+		}catch (Exception E) {
+			//if theres an error with color it will go to default
 		}
-		color1 = temp1;
-		Color temp2;
-		if(text2.contains("0x")) {
-			temp2 = Color.web(text1);
-		}else{
-			text2.toUpperCase();
-			temp2 = Color.valueOf(text2);
-		}
-		color2 = temp2;
+		try {
+			Color temp2;
+			if(text2.contains("0x")) {
+				temp2 = Color.web(text1);
+			}else{
+				text2.toUpperCase();
+				temp2 = Color.valueOf(text2);
+			}
+			color2 = temp2;
 		}catch (Exception E) {
 			//if theres an error with color it will go to default 
-			
 		}
-		finally {
-			buildBoard(stage);
-		}
-		
+		buildBoard(stage);
 	}
 
 	public static void main(String[] args) {
