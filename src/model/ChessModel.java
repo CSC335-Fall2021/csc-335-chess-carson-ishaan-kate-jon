@@ -37,7 +37,7 @@ public class ChessModel {
 					chessBoard[rank][file] = newPiece;
 					file++;
 				}
-				else { 
+				else if (!Character.isAlphabetic(piece)) { 
 					for (int j=0; j < Integer.parseInt("" + piece); j++) {
 						Piece newPiece = new Piece(' ', file, rank);
 						chessBoard[rank][file] = newPiece;
