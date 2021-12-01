@@ -62,12 +62,14 @@ public class ChessModel {
 		
 		public String getFenString(Piece[][] curboard) {
 			String result = "";
-			int count = 0;
+			int count = 0; 
 			for (int row = 0; row < 8; row++) {
 				count = 0;
+				
 				for (int col = 0; col < 8; col++) {
 					// If slot is space
 					if (curboard[row][col].getFenRep() == ' ') {
+						
 						count++;
 					} else {
 						// Else is a piece 
@@ -77,7 +79,7 @@ public class ChessModel {
 						}
 						result += curboard[row][col].getFenRep();
 					}
-					if (count == 8) {
+					if (count != 0 && col == 7) {
 						result += count;
 					}
 				}
