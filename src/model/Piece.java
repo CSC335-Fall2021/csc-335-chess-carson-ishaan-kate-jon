@@ -10,10 +10,9 @@ package model;
  */
 public class Piece {
 	
-		private char fenRep;
 		private int color;
 		
-		private int type;
+		private char type;
 		
 		private int file;
 		private int rank;
@@ -21,12 +20,12 @@ public class Piece {
 		public Piece(char fenChar, int file, int rank) {
 			this.file = file;
 			this.rank = rank;
-			this.fenRep = fenChar;
+			this.type = fenChar;
 			
 		}
 		
 		char getFenRep() {
-			return fenRep;
+			return type;
 		}
 		
 		int getColor() {
