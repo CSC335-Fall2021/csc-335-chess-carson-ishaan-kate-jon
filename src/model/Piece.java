@@ -22,6 +22,13 @@ public class Piece {
 			this.rank = rank;
 			this.type = fenChar;
 			
+			// upper case = white, lower = black
+			if (Character.isUpperCase(fenChar)) {
+				this.color = 1;
+			} else {
+				this.color = 2;
+			}
+			
 		}
 		
 		char getFenRep() {
@@ -32,12 +39,24 @@ public class Piece {
 			return color;
 		}
 		
-		void setColor(int color) {
-			this.color = color;
-		}
-		
 		Move[] getPossibleMoves(int x, int y, Object[][] chessBoard) {
 			return new Move[5];
 		}
+
+		public char getType() {
+			return type;
+		}
+
+
+		public int getFile() {
+			return file;
+		}
+	
+
+		public int getRank() {
+			return rank;
+		}
+
+		
 		
 }
