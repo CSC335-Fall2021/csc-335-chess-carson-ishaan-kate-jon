@@ -1,5 +1,7 @@
 package model;
 
+import java.util.ArrayList;
+
 import javafx.beans.InvalidationListener;
 import javafx.beans.Observable;
 
@@ -30,10 +32,10 @@ public class ChessModel {
 		return thisTurn;
 	}
 
-	public Move[] getPossibleMoves(int x, int y) {
+	public ArrayList<Move> getPossibleMoves(int x, int y) {
 		Piece curPiece = chessBoard[x][y];
 		if (curPiece.getType() == 'p' || curPiece.getType() == 'P') {
-			// TODO implement pawn logic
+			return getMovesPawn(curPiece);
 		} else if (curPiece.getType() == 'r' || curPiece.getType() == 'R') {
 			// TODO implement rook logic
 		} else if (curPiece.getType() == 'n' || curPiece.getType() == 'N') {
@@ -46,6 +48,43 @@ public class ChessModel {
 			// TODO implement king logic
 		}
 		return null;
+	}
+
+	private ArrayList<Move> getMovesPawn(Piece curPiece) {
+		ArrayList<Move> retArr = new ArrayList<Move>();
+		if (curPiece.getType() == 'p') {
+			if (curPiece.getRank() == 1) {
+				if (chessBoard[curPiece.getRank()+2][curPiece.getFile()].getType() == ' ') {
+					retArr.add(new Move(curPiece.getFile(), curPiece.getRank()+2));
+				}
+			} 
+			if (chessBoard[curPiece.getRank()+1][curPiece.getFile()].getType() == ' ') {
+				retArr.add(new Move(curPiece.getFile(), curPiece.getRank()+1));
+			}
+			if (Character.isAlphabetic(chessBoard[curPiece.getRank()+1][curPiece.getFile()+1].getType())) {
+				retArr.add(new Move(curPiece.getFile()+1, curPiece.getRank()+1));
+			}
+			if (Character.isAlphabetic(chessBoard[curPiece.getRank()+1][curPiece.getFile()-1].getType())) {
+				retArr.add(new Move(curPiece.getFile()-1, curPiece.getRank()+1));
+			}
+		} else if (curPiece.getType() == 'P') {
+			if (curPiece.getRank() == 6) {
+				if (chessBoard[curPiece.getRank()-2][curPiece.getFile()].getType() == ' ') {
+					retArr.add(new Move(curPiece.getFile(), curPiece.getRank()+2));
+				}
+			} 
+			if (chessBoard[curPiece.getRank()-1][curPiece.getFile()].getType() == ' ') {
+				retArr.add(new Move(curPiece.getFile(), curPiece.getRank()-1));
+			}
+			if (Character.isAlphabetic(chessBoard[curPiece.getRank()-1][curPiece.getFile()+1].getType())) {
+				retArr.add(new Move(curPiece.getFile()+1, curPiece.getRank()-1));
+			}
+			if (Character.isAlphabetic(chessBoard[curPiece.getRank()-1][curPiece.getFile()-1].getType())) {
+				retArr.add(new Move(curPiece.getFile()-1, curPiece.getRank()-1));
+			}
+		}
+		return retArr;
+		
 	}
 
 	public void makeMove(Move oldMove, Move newMove) {
