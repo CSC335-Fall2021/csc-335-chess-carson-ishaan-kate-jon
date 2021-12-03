@@ -57,6 +57,16 @@ public class Piece {
 			return rank;
 		}
 
+		public void setX(int x) {
+			this.file = x;
+			
+		}
+
+		public void setY(int y) {
+			this.rank = y;
+			
+		}
+
 		
 		
 }

@@ -22,7 +22,7 @@ public class Move {
 	  * @param x : pieces x location
 	  * @param y : pieces y location
 	  */
-	 public Move(int x, int y) {
+	 public Move(int y, int x) {
 		 this.file = x;
 		 this.rank = y;
 	 }

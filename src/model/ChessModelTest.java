@@ -97,6 +97,9 @@ class ChessModelTest {
 		controller.makePlayerMove(new Move(4, 1), new Move(3, 0));
 		System.out.println("After Move (g4 -> h5): ");
 		System.out.println(controller.getFenString());
+		System.out.println(controller.getModel().chessBoard[3][0].getFile());
+		System.out.println(controller.getModel().chessBoard[3][0].getRank());
+		System.out.println(controller.getModel().chessBoard[3][0].getType());
 		System.out.println();
 	}
 

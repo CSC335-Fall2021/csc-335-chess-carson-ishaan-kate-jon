@@ -89,8 +89,10 @@ public class ChessModel {
 
 	public void makeMove(Move oldMove, Move newMove) {
 		Piece emptyReplacement = new Piece(' ', oldMove.getX(), oldMove.getY());
-		chessBoard[newMove.getX()][newMove.getY()] = chessBoard[oldMove.getX()][oldMove.getY()];
-		chessBoard[oldMove.getX()][oldMove.getY()] = emptyReplacement;
+		chessBoard[newMove.getY()][newMove.getX()] = chessBoard[oldMove.getY()][oldMove.getX()];
+		chessBoard[newMove.getY()][newMove.getX()].setX(newMove.getX());
+		chessBoard[newMove.getY()][newMove.getX()].setY(newMove.getY());
+		chessBoard[oldMove.getY()][oldMove.getX()] = emptyReplacement;
 	}
 
 	public void createChessBoard(String fenString) {
