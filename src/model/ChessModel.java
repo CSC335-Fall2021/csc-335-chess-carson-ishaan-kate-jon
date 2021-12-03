@@ -32,8 +32,8 @@ public class ChessModel {
 		return thisTurn;
 	}
 
-	public ArrayList<Move> getPossibleMoves(int x, int y) {
-		Piece curPiece = chessBoard[x][y];
+	public ArrayList<Move> getPossibleMoves(int file, int rank) {
+		Piece curPiece = chessBoard[rank][file];
 		if (curPiece.getType() == 'p' || curPiece.getType() == 'P') {
 			return getMovesPawn(curPiece);
 		} else if (curPiece.getType() == 'r' || curPiece.getType() == 'R') {
