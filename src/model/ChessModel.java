@@ -1,5 +1,8 @@
 package model;
 
+import javafx.beans.InvalidationListener;
+import javafx.beans.Observable;
+
 public class ChessModel {
 	
 		private boolean thisTurn = false;
@@ -28,8 +31,32 @@ public class ChessModel {
 		}
 		
 		public Move[] getPossibleMoves(int x, int y) {
-			// TODO Auto-generated method stub
+			Piece curPiece = chessBoard[x][y];
+			if (curPiece.getType() == 'p' || curPiece.getType() == 'P') {
+				//TODO implement pawn logic
+			}
+			else if (curPiece.getType() == 'r' || curPiece.getType() == 'R') {
+				//TODO implement rook logic
+			}
+			else if (curPiece.getType() == 'n' || curPiece.getType() == 'N') {
+				//TODO implement knight logic
+			}
+			else if (curPiece.getType() == 'b' || curPiece.getType() == 'B') {
+				//TODO implement bishop logic
+			}
+			else if (curPiece.getType() == 'q' || curPiece.getType() == 'Q') {
+				//TODO implement queen logic
+			}
+			else if (curPiece.getType() == 'k' || curPiece.getType() == 'K') {
+				//TODO implement king logic
+			}
 			return null;
+		}
+		
+		public void makeMove(Move oldMove, Move newMove) {
+			Piece emptyReplacement = new Piece(' ', oldMove.getX(), oldMove.getY());
+			chessBoard[newMove.getX()][newMove.getY()] = chessBoard[oldMove.getX()][oldMove.getY()];
+			chessBoard[oldMove.getX()][oldMove.getY()] = emptyReplacement;
 		}
 		
 		public void createChessBoard(String fenString) {

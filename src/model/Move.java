@@ -12,7 +12,6 @@ public class Move {
 	
 	 private int file;
 	 private int rank;
-	 private int color;
 	 
 	 
 	 /**
@@ -23,13 +22,11 @@ public class Move {
 	  * @param x : pieces x location
 	  * @param y : pieces y location
 	  */
-	 public Move(int x, int y, int color) {
+	 public Move(int x, int y) {
 		 this.file = x;
 		 this.rank = y;
-		 this.color = color;
 	 }
 	 
 	 public int getX() { return file; }
 	 public int getY() { return rank; }
-	 public int getColor() {return color; }
 }

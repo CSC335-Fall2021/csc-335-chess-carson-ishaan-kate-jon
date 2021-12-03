@@ -39,7 +39,7 @@ public class Piece {
 			return color;
 		}
 		
-		Move[] getPossibleMoves(int x, int y, Object[][] chessBoard) {
+		Move[] getPossibleMoves(int x, int y, Object[][] chessBoard) { 
 			return new Move[5];
 		}
 

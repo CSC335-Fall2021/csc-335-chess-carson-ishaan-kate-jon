@@ -22,7 +22,7 @@ public class ChessMoveMessage implements Serializable {
 	}
 	
 	public int getOldX() { return oldX; }
-	public int getOldY() { return oldY; }
+	public int getOldY() { return oldY; } 
 	public int getNewX() { return newX; }
 	public int getNewY() { return newY; }
 }
