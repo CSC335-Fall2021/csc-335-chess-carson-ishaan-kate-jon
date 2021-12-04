@@ -2,6 +2,7 @@
 
 import controller.ChessController;
 import javafx.application.Application;
+import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -22,11 +23,13 @@ import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.TilePane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
+import model.Piece;
 
 public class ChessView extends Application {
 	
@@ -45,7 +48,7 @@ public class ChessView extends Application {
 			controller = new ChessController();
 //			controller.getModel().addObserver(this);
 			
-			buildBoard(primaryStage);
+			buildBoard(primaryStage, controller.getFenString());
 
 	        // Setting vBox in the scene
 //			scene = new Scene(vBox,345,320);
@@ -62,7 +65,7 @@ public class ChessView extends Application {
 		}
 	}
 
-	private void buildBoard(Stage stage) {
+	private void buildBoard(Stage stage, String fenRep) {
 		TabPane tabPane = new TabPane();
 
 		stage.setTitle("Chess");
@@ -70,6 +73,7 @@ public class ChessView extends Application {
 		
 		for( int x = 0; x < 8; x++) {
 			for( int y = 0; y < 8; y++) {
+				StackPane stack = new StackPane();
 				Rectangle rec = new Rectangle();
 				rec.setWidth(100);
 				rec.setHeight(100);
@@ -80,8 +84,47 @@ public class ChessView extends Application {
 				} else {
 					rec.setFill(color2);
 				}
-				gridpane.add(rec, x,y);
+				stack.getChildren().add(rec);
+				gridpane.add(stack, x,y);
+			}
 		}
+		
+		if (fenRep != null) {
+			int file = 0;
+			int rank = 0;
+			for (int i=0; i<fenRep.length(); i++) {
+				char piece = fenRep.charAt(i);
+				if (piece == '/') {
+					file = 0;
+					rank++;
+				} else if (Character.isAlphabetic(piece)) {
+					String unicode = getUnicodeValue(piece);
+					Label label = new Label(unicode);
+					label.setScaleX(4.0);
+					label.setScaleY(4.0);
+					label.setAlignment(Pos.CENTER_RIGHT);
+					ObservableList<Node> stackList = gridpane.getChildren();
+					for (Node node : stackList) {
+						StackPane curNode = (StackPane) node;
+						if (gridpane.getRowIndex(curNode) == rank && gridpane.getColumnIndex(curNode) == file) {
+							curNode.getChildren().add(label);
+						}
+					}
+					file++;
+				} else if (!Character.isAlphabetic(piece)) {
+					for (int j = 0; j < Integer.parseInt("" + piece); j++) {
+						Label label = new Label("");
+						ObservableList<Node> stackList = gridpane.getChildren();
+						for (Node node : stackList) {
+							StackPane curNode = (StackPane) node;
+							if (gridpane.getRowIndex(curNode) == rank && gridpane.getColumnIndex(curNode) == file) {
+								curNode.getChildren().add(label);
+							}
+						}
+						file++;
+					}
+				}
+			}
 		}
 
 		 Tab tab1 = new Tab("Board", gridpane);
@@ -95,8 +138,48 @@ public class ChessView extends Application {
 		
         stage.setScene(scene);
         stage.show();
-		
-		
+	}
+
+	private String getUnicodeValue(char piece) {
+		if (piece == 'p') {
+			return "\u265F";
+		}
+		else if (piece == 'P') {
+			return "\u2659";
+		}
+		else if (piece == 'r') {
+			return "\u265C";
+		}
+		else if (piece == 'R') {
+			return "\u2656";
+		}
+		else if (piece == 'n') {
+			return "\u265E";
+		}
+		else if (piece == 'N') {
+			return "\u2658";
+		}
+		else if (piece == 'b') {
+			return "\u265D";
+		}
+		else if (piece == 'B') {
+			return "\u2657";
+		}
+		else if (piece == 'q') {
+			return "\u265B";
+		}
+		else if (piece == 'Q') {
+			return "\u2655";
+		}
+		else if (piece == 'k') {
+			return "\u265A";
+		}
+		else if (piece == 'K') {
+			return "\u2654";
+		}
+		else {
+			return " ";
+		}
 	}
 
 	private VBox CreateCustomization(Stage stage) {
@@ -151,7 +234,7 @@ public class ChessView extends Application {
 		}catch (Exception E) {
 			//if theres an error with color it will go to default 
 		}
-		buildBoard(stage);
+		buildBoard(stage, null);
 	}
 
 	public static void main(String[] args) {
