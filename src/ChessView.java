@@ -100,8 +100,8 @@ public class ChessView extends Application {
 				} else if (Character.isAlphabetic(piece)) {
 					String unicode = getUnicodeValue(piece);
 					Label label = new Label(unicode);
-					label.setScaleX(4.0);
-					label.setScaleY(4.0);
+					label.setScaleX(5.0);
+					label.setScaleY(5.0);
 					label.setAlignment(Pos.CENTER_RIGHT);
 					ObservableList<Node> stackList = gridpane.getChildren();
 					for (Node node : stackList) {
@@ -234,7 +234,7 @@ public class ChessView extends Application {
 		}catch (Exception E) {
 			//if theres an error with color it will go to default 
 		}
-		buildBoard(stage, null);
+		buildBoard(stage, controller.getFenString());
 	}
 
 	public static void main(String[] args) {
