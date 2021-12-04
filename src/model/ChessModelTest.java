@@ -56,7 +56,7 @@ class ChessModelTest {
 		System.out.println("Before Move: ");
 		System.out.println(controller.getFenString());
 		assertEquals(cmprString, controller.getFenString());
-		controller.makePlayerMove(new Move(1, 0), new Move(2, 0));
+		controller.makePlayerMove(new Move(0, 1), new Move(0, 2));
 		System.out.println("After Move (h7 -> h6): ");
 		System.out.println(controller.getFenString());
 		System.out.println();
@@ -71,10 +71,10 @@ class ChessModelTest {
 		System.out.println("Before Move: ");
 		System.out.println(controller.getFenString());
 		assertEquals(cmprString, controller.getFenString());
-		controller.makePlayerMove(new Move(6, 1), new Move(4, 1));
+		controller.makePlayerMove(new Move(1, 6), new Move(1, 4));
 		System.out.println("After Move (g2 -> g4): ");
 		System.out.println(controller.getFenString());
-		controller.makePlayerMove(new Move(1, 0), new Move(3, 0));
+		controller.makePlayerMove(new Move(0, 1), new Move(0, 3));
 		System.out.println("After Move (h7 -> h5): ");
 		System.out.println(controller.getFenString());
 		System.out.println();
@@ -88,13 +88,13 @@ class ChessModelTest {
 		System.out.println("Before Move: ");
 		System.out.println(controller.getFenString());
 		assertEquals(cmprString, controller.getFenString());
-		controller.makePlayerMove(new Move(6, 1), new Move(4, 1));
+		controller.makePlayerMove(new Move(1, 6), new Move(1, 4));
 		System.out.println("After Move (g2 -> g4): ");
 		System.out.println(controller.getFenString());
-		controller.makePlayerMove(new Move(1, 0), new Move(3, 0));
+		controller.makePlayerMove(new Move(0, 1), new Move(0, 3));
 		System.out.println("After Move (h7 -> h5): ");
 		System.out.println(controller.getFenString());
-		controller.makePlayerMove(new Move(4, 1), new Move(3, 0));
+		controller.makePlayerMove(new Move(1, 4), new Move(0, 3));
 		System.out.println("After Move (g4 -> h5): ");
 		System.out.println(controller.getFenString());
 		System.out.println(controller.getModel().chessBoard[3][0].getFile());
