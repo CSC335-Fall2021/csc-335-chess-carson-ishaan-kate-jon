@@ -61,10 +61,12 @@ public class ChessModel {
 			if (chessBoard[curPiece.getRank()+1][curPiece.getFile()].getType() == ' ') {
 				retArr.add(new Move(curPiece.getFile(), curPiece.getRank()+1));
 			}
-			if (Character.isAlphabetic(chessBoard[curPiece.getRank()+1][curPiece.getFile()+1].getType())) {
+			if (Character.isAlphabetic(chessBoard[curPiece.getRank()+1][curPiece.getFile()+1].getType()) &&
+			    chessBoard[curPiece.getRank()+1][curPiece.getFile()+1].getColor() != curPiece.getColor()) {
 				retArr.add(new Move(curPiece.getFile()+1, curPiece.getRank()+1));
 			}
-			if (Character.isAlphabetic(chessBoard[curPiece.getRank()+1][curPiece.getFile()-1].getType())) {
+			if (Character.isAlphabetic(chessBoard[curPiece.getRank()+1][curPiece.getFile()-1].getType()) &&
+				chessBoard[curPiece.getRank()+1][curPiece.getFile()-1].getColor() != curPiece.getColor()) {
 				retArr.add(new Move(curPiece.getFile()-1, curPiece.getRank()+1));
 			}
 		} else if (curPiece.getType() == 'P') {
@@ -76,10 +78,12 @@ public class ChessModel {
 			if (chessBoard[curPiece.getRank()-1][curPiece.getFile()].getType() == ' ') {
 				retArr.add(new Move(curPiece.getFile(), curPiece.getRank()-1));
 			}
-			if (Character.isAlphabetic(chessBoard[curPiece.getRank()-1][curPiece.getFile()+1].getType())) {
+			if (Character.isAlphabetic(chessBoard[curPiece.getRank()-1][curPiece.getFile()+1].getType()) &&
+				chessBoard[curPiece.getRank()-1][curPiece.getFile()+1].getColor() != curPiece.getColor()) {
 				retArr.add(new Move(curPiece.getFile()+1, curPiece.getRank()-1));
 			}
-			if (Character.isAlphabetic(chessBoard[curPiece.getRank()-1][curPiece.getFile()-1].getType())) {
+			if (Character.isAlphabetic(chessBoard[curPiece.getRank()-1][curPiece.getFile()-1].getType()) &&
+				chessBoard[curPiece.getRank()-1][curPiece.getFile()-1].getColor() != curPiece.getColor()) {
 				retArr.add(new Move(curPiece.getFile()-1, curPiece.getRank()-1));
 			}
 		}
