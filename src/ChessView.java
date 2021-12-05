@@ -52,6 +52,7 @@ public class ChessView extends Application implements Observer{
 			controller.getModel().addObserver(this);
 			
 			buildBoard(primaryStage, controller.getFenString());
+			
 
 		} catch(Exception e) {
 			e.printStackTrace();

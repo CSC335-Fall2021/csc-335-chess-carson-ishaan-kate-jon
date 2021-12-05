@@ -87,8 +87,7 @@ public class ChessModel extends Observable {
 				retArr.add(new Move(curPiece.getFile()-1, curPiece.getRank()-1));
 			}
 		}
-		return retArr;
-		
+		return retArr;	
 	}
 
 	public void makeMove(Move oldMove, Move newMove) {
