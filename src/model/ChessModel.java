@@ -3,9 +3,9 @@ package model;
 import java.util.ArrayList;
 
 import javafx.beans.InvalidationListener;
-import javafx.beans.Observable;
+import java.util.Observable;
 
-public class ChessModel {
+public class ChessModel extends Observable {
 
 	private boolean thisTurn = false;
 	Piece[][] chessBoard;
@@ -97,6 +97,9 @@ public class ChessModel {
 		chessBoard[newMove.getY()][newMove.getX()].setX(newMove.getX());
 		chessBoard[newMove.getY()][newMove.getX()].setY(newMove.getY());
 		chessBoard[oldMove.getY()][oldMove.getX()] = emptyReplacement;
+		
+		setChanged();
+		notifyObservers(getFenString());
 	}
 
 	public void createChessBoard(String fenString) {

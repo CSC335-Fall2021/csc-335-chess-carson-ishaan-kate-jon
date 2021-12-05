@@ -1,5 +1,8 @@
 
 
+import java.util.Observable;
+import java.util.Observer;
+
 import controller.ChessController;
 import javafx.application.Application;
 import javafx.collections.ObservableList;
@@ -31,9 +34,9 @@ import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import model.Piece;
 
-public class ChessView extends Application {
+public class ChessView extends Application implements Observer{
 	
-	private Stage base;
+	private Stage stage;
 	private Scene scene;
 	private BorderPane root;
 	private GridPane chessGrid;
@@ -46,28 +49,23 @@ public class ChessView extends Application {
 	public void start(Stage primaryStage) {
 		try {	
 			controller = new ChessController();
-//			controller.getModel().addObserver(this);
+			controller.getModel().addObserver(this);
 			
 			buildBoard(primaryStage, controller.getFenString());
 
-	        // Setting vBox in the scene
-//			scene = new Scene(vBox,345,320);
-			
-			// Initializing and Assigning Event Handler to scene
-//			EventHandler<MouseEvent> mouseEvent1 = new MouseClick();
-//			scene.setOnMouseClicked(mouseEvent1);
-			
-			// Setting and showing scene to user
-//			base.setScene(scene);
-//			base.show();
 		} catch(Exception e) {
 			e.printStackTrace();
 		}
 	}
+	
+	@Override
+	public void update(Observable arg0, Object arg1) {
+		String curFenRep = (String) arg1;
+		buildBoard(stage, curFenRep);
+	}
 
 	private void buildBoard(Stage stage, String fenRep) {
 		TabPane tabPane = new TabPane();
-
 		stage.setTitle("Chess");
 		GridPane gridpane = new GridPane();
 		
@@ -136,8 +134,10 @@ public class ChessView extends Application {
 	    VBox vBox = new VBox(tabPane);
 		Scene scene = new Scene(vBox);
 		
-        stage.setScene(scene);
-        stage.show();
+		this.stage = stage;
+		
+        this.stage.setScene(scene);
+        this.stage.show();
 	}
 
 	private String getUnicodeValue(char piece) {
@@ -240,4 +240,5 @@ public class ChessView extends Application {
 	public static void main(String[] args) {
 		launch(args);
 	}
+
 }
