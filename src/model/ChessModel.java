@@ -200,13 +200,13 @@ public class ChessModel extends Observable {
 			// Move 2 forward and 1 left
 			if (0 <= curPiece.getFile()-1 && curPiece.getFile()-1 < this.cols && 
 					Character.isAlphabetic(chessBoard[curPiece.getRank()+2][curPiece.getFile()-1].getType()) &&
-				chessBoard[curPiece.getRank()+2][curPiece.getFile()-1].getType() != curPiece.getColor()) {
+				chessBoard[curPiece.getRank()+2][curPiece.getFile()-1].getColor() != curPiece.getColor()) {
 				retArr.add(new Move(curPiece.getFile()-1, curPiece.getRank()+2));
 			}
 			// Move 2 forward and 1 right
 			if (0 <= curPiece.getFile()+1 && curPiece.getFile()+1 < this.cols && 
 					Character.isAlphabetic(chessBoard[curPiece.getRank()+2][curPiece.getFile()+1].getType()) &&
-					chessBoard[curPiece.getRank()+2][curPiece.getFile()+1].getType() != curPiece.getColor()) {
+					chessBoard[curPiece.getRank()+2][curPiece.getFile()+1].getColor() != curPiece.getColor()) {
 				retArr.add(new Move(curPiece.getFile()+1, curPiece.getRank()+2));
 			}
 		}
@@ -215,13 +215,13 @@ public class ChessModel extends Observable {
 			// Move 2 backward and 1 left
 			if (0 <= curPiece.getFile()-1 && curPiece.getFile()-1 < this.cols && 
 					Character.isAlphabetic(chessBoard[curPiece.getRank()-2][curPiece.getFile()-1].getType()) &&
-					chessBoard[curPiece.getRank()-2][curPiece.getFile()-1].getType() != curPiece.getColor()) {
+					chessBoard[curPiece.getRank()-2][curPiece.getFile()-1].getColor() != curPiece.getColor()) {
 				retArr.add(new Move(curPiece.getFile()-1, curPiece.getRank()-2));
 			}
 			// Move 2 backward and 1 right
 			if (0 <= curPiece.getFile()+1 && curPiece.getFile()+1 < this.cols && 
 					Character.isAlphabetic(chessBoard[curPiece.getRank()-2][curPiece.getFile()+1].getType()) &&
-					chessBoard[curPiece.getRank()-2][curPiece.getFile()+1].getType() != curPiece.getColor()) {
+					chessBoard[curPiece.getRank()-2][curPiece.getFile()+1].getColor() != curPiece.getColor()) {
 				retArr.add(new Move(curPiece.getFile()+1, curPiece.getRank()-2));
 			}
 		}
@@ -230,13 +230,13 @@ public class ChessModel extends Observable {
 			// Move 1 forward and 2 left
 			if (0 <= curPiece.getFile()-2 && curPiece.getFile()-2 < this.cols && 
 					Character.isAlphabetic(chessBoard[curPiece.getRank()+1][curPiece.getFile()-2].getType()) &&
-					chessBoard[curPiece.getRank()+1][curPiece.getFile()-2].getType() != curPiece.getColor()) {
+					chessBoard[curPiece.getRank()+1][curPiece.getFile()-2].getColor() != curPiece.getColor()) {
 				retArr.add(new Move(curPiece.getFile()-2, curPiece.getRank()+1));
 			}
 			// Move 1 forward and 2 right
 			if (0 <= curPiece.getFile()+2 && curPiece.getFile()+2 < this.cols && 
 					Character.isAlphabetic(chessBoard[curPiece.getRank()+1][curPiece.getFile()+2].getType()) &&
-					chessBoard[curPiece.getRank()+1][curPiece.getFile()+2].getType() != curPiece.getColor()) {
+					chessBoard[curPiece.getRank()+1][curPiece.getFile()+2].getColor() != curPiece.getColor()) {
 				retArr.add(new Move(curPiece.getFile()+2, curPiece.getRank()+1));
 			}
 		}
@@ -245,13 +245,13 @@ public class ChessModel extends Observable {
 			// Move 1 backward and 2 left
 			if (0 <= curPiece.getFile()-2 && curPiece.getFile()-2 < this.cols && 
 					Character.isAlphabetic(chessBoard[curPiece.getRank()-1][curPiece.getFile()-2].getType()) &&
-					chessBoard[curPiece.getRank()-1][curPiece.getFile()-2].getType() != curPiece.getColor()) {
+					chessBoard[curPiece.getRank()-1][curPiece.getFile()-2].getColor() != curPiece.getColor()) {
 				retArr.add(new Move(curPiece.getFile()-2, curPiece.getRank()-1));
 			}
 			// Move 1 backward and 2 right
 			if (0 <= curPiece.getFile()+2 && curPiece.getFile()+2 < this.cols && 
 					Character.isAlphabetic(chessBoard[curPiece.getRank()-1][curPiece.getFile()+2].getType()) &&
-					chessBoard[curPiece.getRank()-1][curPiece.getFile()+2].getType() != curPiece.getColor()) {
+					chessBoard[curPiece.getRank()-1][curPiece.getFile()+2].getColor() != curPiece.getColor()) {
 				retArr.add(new Move(curPiece.getFile()+2, curPiece.getRank()-1));
 			}
 		}
