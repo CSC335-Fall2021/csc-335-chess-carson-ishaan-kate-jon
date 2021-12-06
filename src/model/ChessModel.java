@@ -502,6 +502,7 @@ public class ChessModel extends Observable {
 			this.isGameOver = isCheckmate(curPiece); // if king has no moves, call isCheckmate.
 			return null;
 		} else {
+			this.isGameOver = false;
 			return retArr;	
 		}
 	}
@@ -588,6 +589,30 @@ public class ChessModel extends Observable {
 		chessBoard[newMove.getY()][newMove.getX()].setX(newMove.getX());
 		chessBoard[newMove.getY()][newMove.getX()].setY(newMove.getY());
 		chessBoard[oldMove.getY()][oldMove.getX()] = emptyReplacement;
+		
+		// checking if game is over after move is made
+		ArrayList<Piece> oppPieces;
+		char king;
+		if (chessBoard[oldMove.getY()][oldMove.getX()].getColor() == 1) {
+			oppPieces = this.blackPieces;
+			king = 'k';
+		} else {
+			oppPieces = this.whitePieces;
+			king = 'K';
+		}
+		for (Piece oppPiece : oppPieces) {
+			if (oppPiece.getType() == king) {
+				getMovesKing(oppPiece);
+				break;
+			}
+			
+		}
+		
+		if (isGameOver) {
+			
+		} else {
+			
+		}
 		
 		setChanged();
 		notifyObservers(getFenString());
