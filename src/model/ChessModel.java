@@ -555,6 +555,15 @@ public class ChessModel extends Observable {
 		}
 	}
 	
+	public boolean isCheckmate(Piece king) {
+		if (getFenString().equals(starterString)) {
+			return false;
+		} else {
+			ArrayList<Move> moves = getMovesKing(king);
+			return moves.equals(null);
+		}
+	}
+	
 	// ------------------------- End of new untested movement logic ---------------------------------
 	
 	private void printMoves(ArrayList<Move> list) {
