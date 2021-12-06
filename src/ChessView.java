@@ -48,6 +48,7 @@ public class ChessView extends Application implements Observer{
 	private Color color2 = Color.ANTIQUEWHITE;
 	private int player = 0;
 	private boolean canClick = false;
+	private Move prevPosition;
 			
 
 	@Override
@@ -79,6 +80,7 @@ public class ChessView extends Application implements Observer{
 	public void update(Observable arg0, Object arg1) {
 		String curFenRep = (String) arg1;
 		buildBoard(stage, curFenRep);
+		setupHandlersOne();
 	}
 
 	private void buildBoard(Stage stage, String fenRep) {
@@ -272,6 +274,7 @@ public class ChessView extends Application implements Observer{
 		public void handle(MouseEvent arg0) {
 			StackPane curPane = (StackPane)arg0.getSource();
 			System.out.println("This node was clicked (file: " + chessGrid.getColumnIndex(curPane) + ") (rank:" + chessGrid.getRowIndex(curPane) + ")");
+			prevPosition = new Move(chessGrid.getColumnIndex(curPane), chessGrid.getRowIndex(curPane));
 			ObservableList<Node> stackContents = curPane.getChildren();
 			for (Node child : stackContents) {
 				if (child instanceof Label) {
@@ -295,6 +298,11 @@ public class ChessView extends Application implements Observer{
 		}
 
 		private void setupHandlers2(ArrayList<Move> moveLst) {
+			if (moveLst == null) {
+				buildBoard(stage, controller.getFenString());
+				setupHandlersOne();
+				return;
+			}
 			ObservableList<Node> stackList = chessGrid.getChildren();
 			for (Node node : stackList) {
 				boolean possibleMove = false;
@@ -310,9 +318,7 @@ public class ChessView extends Application implements Observer{
 				}
 				ObservableList<Node> children = curNode.getChildren();
 				if ((children.get(0) instanceof Rectangle) && possibleMove == true) {
-					System.out.println("This is true");
-					
-					((Rectangle) children.get(0)).setFill(Color.RED);
+					((Rectangle) children.get(0)).setStyle("-fx-fill: green; -fx-stroke: black; -fx-stroke-width: 1;");
 				}
 				
 			}
@@ -329,8 +335,9 @@ public class ChessView extends Application implements Observer{
 
 		@Override
 		public void handle(MouseEvent arg0) {
-			System.out.println("I am here");
-			
+			StackPane curPane1 = (StackPane)arg0.getSource();
+			Move newPosition = new Move(chessGrid.getColumnIndex(curPane1), chessGrid.getRowIndex(curPane1));
+			controller.makePlayerMove(prevPosition, newPosition);
 		}
 		
 	}
