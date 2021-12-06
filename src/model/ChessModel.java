@@ -77,7 +77,8 @@ public class ChessModel extends Observable {
 		if (curPiece.getType() == 'p') {
 			// If pawn is in start position, can move 2
 			if (curPiece.getRank() == 1) {
-				if (chessBoard[curPiece.getRank()+2][curPiece.getFile()].getType() == ' ') {
+				if (chessBoard[curPiece.getRank()+1][curPiece.getFile()].getType() == ' ' &&
+						chessBoard[curPiece.getRank()+2][curPiece.getFile()].getType() == ' ') {
 					retArr.add(new Move(curPiece.getFile(), curPiece.getRank()+2));
 				}
 			}
@@ -101,7 +102,8 @@ public class ChessModel extends Observable {
 			// Else if piece is white
 			// If pawn is in start position, can move 2
 			if (curPiece.getRank() == 6) {
-				if (chessBoard[curPiece.getRank()-2][curPiece.getFile()].getType() == ' ') {
+				if (chessBoard[curPiece.getRank()-1][curPiece.getFile()].getType() == ' ' &&
+						chessBoard[curPiece.getRank()-2][curPiece.getFile()].getType() == ' ') {
 					retArr.add(new Move(curPiece.getFile(), curPiece.getRank()-2));
 				}
 			}
@@ -264,11 +266,12 @@ public class ChessModel extends Observable {
 	
 	private ArrayList<Move> getMovesRook(Piece curPiece) {
 		ArrayList<Move> retArr = new ArrayList<Move>();
-		if (curPiece.getType() == 'r') {
-			;
-		} else if (curPiece.getType() == 'R') {
-			;
-		}
+		int curRow = curPiece.getRank();
+		int curCol = curPiece.getFile();
+		// Loop for forward moving
+		// Loop for backwards moving
+		// Loop for left moving
+		// Loop for right moving
 		if (retArr.size() == 0) {
 			return null;
 		} else {
