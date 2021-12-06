@@ -23,7 +23,9 @@ public class Piece {
 			this.type = fenChar;
 			
 			// upper case = white, lower = black
-			if (Character.isUpperCase(fenChar)) {
+			if (fenChar == ' ') {
+				this.color = 0;
+			} else if (Character.isUpperCase(fenChar)) {
 				this.color = 1;
 			} else {
 				this.color = 2;

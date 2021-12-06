@@ -1,35 +1,35 @@
 package model;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
 
 import javafx.beans.InvalidationListener;
 import java.util.Observable;
+import java.util.Set;
 
 public class ChessModel extends Observable {
 
 	private boolean thisTurn = false;
 	Piece[][] chessBoard;
+	ArrayList<Piece> whitePieces;
+	ArrayList<Piece> blackPieces;
 	private final int rows;
 	private final int cols;
 	private static final String starterString = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR";
 
 	public ChessModel() {
-		this(starterString);
+		this(starterString, 8, 8);
 	}
 
 	public ChessModel(String fenString) {
-		chessBoard = new Piece[8][8];
-		this.rows = 8;
-		this.cols = 8;
-		if (fenString == null) {
-			createChessBoard(starterString);
-		} else {
-			createChessBoard(fenString);
-		}
+		this(fenString, 8, 8);
 	}
 	
 	public ChessModel(String fenString, int rows, int cols) {
 		chessBoard = new Piece[rows][cols];
+		whitePieces = new ArrayList<Piece>();
+		blackPieces = new ArrayList<Piece>();
 		this.rows = rows;
 		this.cols = cols;
 		if (fenString == null) {
@@ -131,15 +131,7 @@ public class ChessModel extends Observable {
 		}
 	}
 	
-	/*
-	 * Compared to other chess pieces, the knight's movement is unique: it may move two 
-	 * squares vertically and one square horizontally, or two squares horizontally and 
-	 * one square vertically (with both forming the shape of an L). This way, a knight 
-	 * can have a maximum of 8 moves. While moving, the knight can jump over pieces to 
-	 * reach its destination Knights capture in the same way, replacing the enemy piece 
-	 * on the square and removing it from the board. Knights and pawns are 
-	 * the only pieces that can be moved in the initial position.
-	 */
+	// ------------------------- Start of new untested movement logic ---------------------------------
 	private ArrayList<Move> getMovesKnight(Piece curPiece) {
 		ArrayList<Move> retArr = new ArrayList<Move>();
 		// ------------------------ Check the new spot is empty -------------------------
@@ -266,12 +258,60 @@ public class ChessModel extends Observable {
 	
 	private ArrayList<Move> getMovesRook(Piece curPiece) {
 		ArrayList<Move> retArr = new ArrayList<Move>();
-		int curRow = curPiece.getRank();
-		int curCol = curPiece.getFile();
+		int pieceRow = curPiece.getRank();
+		int pieceCol = curPiece.getFile();
 		// Loop for forward moving
-		// Loop for backwards moving
+		for (int i = pieceRow - 1; i >= 0; i--) {
+			// If the new row index has a piece that is not empty
+			if (Character.isAlphabetic(chessBoard[i][pieceCol].getType())) {
+				// Check for if blocking piece is opposing piece, add to list if yes
+				if (chessBoard[i][pieceCol].getColor() != curPiece.getColor()) {
+					retArr.add(new Move(pieceCol, i));
+				}
+				break;
+			} else {
+				retArr.add(new Move(pieceCol, i));
+			}
+		}
+		// Loop for backward moving
+		for (int i = pieceRow + 1; i < this.rows; i++) {
+			// If the new row index has a piece that is not empty
+			if (Character.isAlphabetic(chessBoard[i][pieceCol].getType())) {
+				// Check for if blocking piece is opposing piece, add to list if yes
+				if (chessBoard[i][pieceCol].getColor() != curPiece.getColor()) {
+					retArr.add(new Move(pieceCol, i));
+				}
+				break;
+			} else {
+				retArr.add(new Move(pieceCol, i));
+			}
+		}
 		// Loop for left moving
+		for (int i = pieceCol - 1; i >= 0; i--) {	
+			// If the new row index has a piece that is not empty
+			if (Character.isAlphabetic(chessBoard[pieceRow][i].getType())) {
+				// Check for if blocking piece is opposing piece, add to list if yes
+				if (chessBoard[pieceRow][i].getColor() != curPiece.getColor()) {	
+					retArr.add(new Move(i, pieceRow));
+				}
+				break;
+			} else {
+				retArr.add(new Move(i, pieceRow));
+			}
+		}
 		// Loop for right moving
+		for (int i = pieceCol + 1; i < this.cols; i++) {
+			// If the new row index has a piece that is not empty
+			if (Character.isAlphabetic(chessBoard[pieceRow][i].getType())) {
+				// Check for if blocking piece is opposing piece, add to list if yes
+				if (chessBoard[pieceRow][i].getColor() != curPiece.getColor()) {
+					retArr.add(new Move(i, pieceRow));
+				}
+				break;
+			} else {
+				retArr.add(new Move(i, pieceRow));
+			}
+		}
 		if (retArr.size() == 0) {
 			return null;
 		} else {
@@ -281,10 +321,59 @@ public class ChessModel extends Observable {
 	
 	private ArrayList<Move> getMovesBishop(Piece curPiece) {
 		ArrayList<Move> retArr = new ArrayList<Move>();
-		if (curPiece.getType() == 'b') {
-			;
-		} else if (curPiece.getType() == 'B') {
-			;
+		int pieceRow = curPiece.getRank();
+		int pieceCol = curPiece.getFile();
+		// Loop for forward right diagonal
+		for (int curRow = pieceRow-1, curCol = pieceCol+1; (0 <= curRow && curRow < this.rows) &&
+				(0 <= curCol && curCol < this.cols); curRow--, curCol++) {
+			if (Character.isAlphabetic(chessBoard[curRow][curCol].getType())) {
+				// Check for if blocking piece is opposing piece, add to list if yes
+				if (chessBoard[curRow][curCol].getColor() != curPiece.getColor()) {
+					retArr.add(new Move(curCol, curRow));
+				}
+				break;
+			} else {
+				retArr.add(new Move(curCol, curRow));
+			}
+		}
+		// Loop for forward left diagonal
+		for (int curRow = pieceRow-1, curCol = pieceCol-1; (0 <= curRow && curRow < this.rows) &&
+				(0 <= curCol && curCol < this.cols); curRow--, curCol--) {
+			if (Character.isAlphabetic(chessBoard[curRow][curCol].getType())) {
+				// Check for if blocking piece is opposing piece, add to list if yes
+				if (chessBoard[curRow][curCol].getColor() != curPiece.getColor()) {
+					retArr.add(new Move(curCol, curRow));
+				}
+				break;
+			} else {
+				retArr.add(new Move(curCol, curRow));
+			}
+		}
+		// Loop for backward right diagonal
+		for (int curRow = pieceRow+1, curCol = pieceCol+1; (0 <= curRow && curRow < this.rows) &&
+				(0 <= curCol && curCol < this.cols); curRow++, curCol++) {
+			if (Character.isAlphabetic(chessBoard[curRow][curCol].getType())) {
+				// Check for if blocking piece is opposing piece, add to list if yes
+				if (chessBoard[curRow][curCol].getColor() != curPiece.getColor()) {
+					retArr.add(new Move(curCol, curRow));
+				}
+				break;
+			} else {
+				retArr.add(new Move(curCol, curRow));
+			}
+		}
+		// Loop for backward left diagonal
+		for (int curRow = pieceRow+1, curCol = pieceCol-1; (0 <= curRow && curRow < this.rows) &&
+				(0 <= curCol && curCol < this.cols); curRow++, curCol--) {
+			if (Character.isAlphabetic(chessBoard[curRow][curCol].getType())) {
+				// Check for if blocking piece is opposing piece, add to list if yes
+				if (chessBoard[curRow][curCol].getColor() != curPiece.getColor()) {
+					retArr.add(new Move(curCol, curRow));
+				}
+				break;
+			} else {
+				retArr.add(new Move(curCol, curRow));
+			}
 		}
 		if (retArr.size() == 0) {
 			return null;
@@ -293,17 +382,171 @@ public class ChessModel extends Observable {
 		}
 	}
 	
-	/*
-	 * The queen (♕, ♛) is the most powerful piece in the game of chess, able to move any
-	 * number of squares vertically, horizontally or diagonally, unless the square is already
-	 * occupied by a friendly piece
-	 */
 	private ArrayList<Move> getMovesQueen(Piece curPiece) {
+		// Getting the possible diagonal moves
 		ArrayList<Move> retArr = new ArrayList<Move>();
-		if (curPiece.getType() == 'q') {
-			;
-		} else if (curPiece.getType() == 'Q') {
-			;
+		ArrayList<Move> bMoves = getMovesBishop(curPiece);
+		ArrayList<Move> rMoves =  getMovesRook(curPiece);
+		if (bMoves != null) {
+			retArr.addAll(bMoves);
+		}
+		if (rMoves != null) {
+			retArr.addAll(rMoves);
+		}
+		// Adding possible vertical and horizontal moves to diagonal
+		if (retArr.size() == 0) {
+			return null;
+		} else {
+			return retArr;	
+		}
+	}
+	
+	private ArrayList<Move> getMovesKing(Piece curPiece) {
+		ArrayList<Move> kingMoveSet = new ArrayList<Move>();
+		int pieceRow = curPiece.getRank();
+		int pieceCol = curPiece.getFile();
+		// First go in and add all possible moves for king with out "checkmate" checking
+		// One above
+		if (0 <= pieceRow+1 && pieceRow+1 < this.rows 
+				&& chessBoard[pieceRow+1][pieceCol].getColor() != curPiece.getColor()) {
+			kingMoveSet.add(new Move(pieceCol, pieceRow+1));
+		}
+		// One below
+		if (0 <= pieceRow-1 && pieceRow-1 < this.rows 
+				&& chessBoard[pieceRow-1][pieceCol].getColor() != curPiece.getColor()) {
+			kingMoveSet.add(new Move(pieceCol, pieceRow-1));
+		}
+		// One left 
+		if (0 <= pieceCol-1 && pieceCol-1 < this.cols 
+				&& chessBoard[pieceRow][pieceCol-1].getColor() != curPiece.getColor()) {
+			kingMoveSet.add(new Move(pieceCol-1, pieceRow));
+		}
+		// One right
+		if (0 <= pieceCol+1 && pieceCol+1 < this.cols 
+				&& chessBoard[pieceRow][pieceCol+1].getColor() != curPiece.getColor()) {
+			kingMoveSet.add(new Move(pieceCol+1, pieceRow));
+		}
+		// One top right -- change from below
+		if ((0 <= pieceRow-1 && pieceRow-1 < this.rows) &&
+				(0 <= pieceCol+1 && pieceCol+1 < this.cols) 
+				&& chessBoard[pieceRow-1][pieceCol+1].getColor() != curPiece.getColor()) {
+			kingMoveSet.add(new Move(pieceCol+1, pieceRow-1));
+		}
+		// One top left 
+		if ((0 <= pieceRow-1 && pieceRow-1 < this.rows) &&
+				(0 <= pieceCol-1 && pieceCol-1 < this.cols) 
+				&& chessBoard[pieceRow-1][pieceCol-1].getColor() != curPiece.getColor()) {
+			kingMoveSet.add(new Move(pieceCol-1, pieceRow-1));
+		}
+		// One bottom right
+		if ((0 <= pieceRow+1 && pieceRow+1 < this.rows) &&
+				(0 <= pieceCol+1 && pieceCol+1 < this.cols)
+				&& chessBoard[pieceRow+1][pieceCol+1].getColor() != curPiece.getColor()) {
+			kingMoveSet.add(new Move(pieceCol+1, pieceRow+1));
+		}
+		// One bottom left
+		if ((0 <= pieceRow+1 && pieceRow+1 < this.rows) &&
+				(0 <= pieceCol-1 && pieceCol-1 < this.cols)
+				&& chessBoard[pieceRow+1][pieceCol-1].getColor() != curPiece.getColor()) {
+			kingMoveSet.add(new Move(pieceCol-1, pieceRow+1));
+		}
+		// Then iterate over all pieces in opposite team and create a set of all possible
+		// moves by the opposing team
+		ArrayList<Piece> oppPieces;
+		if (Character.isUpperCase(curPiece.getType())) {
+			oppPieces = this.blackPieces;
+		} else {
+			oppPieces = this.whitePieces;
+		}
+		for (Piece oppPiece : oppPieces) {
+			ArrayList<Move> temp = null;
+			int curCol = oppPiece.getFile();
+			int curRow = oppPiece.getRank();
+			// King detection is off because of stackoverflow
+			// Pawn detection is different because pawns attack differently
+			if (Character.toLowerCase(oppPiece.getType()) == 'p') {
+				temp = pawnAttacks(oppPiece, oppPiece.getColor());
+			} 
+			// King detection is different, cannot move within 1 block radius of
+			// other king
+			else if (Character.toLowerCase(oppPiece.getType()) == 'k') {
+				temp = new ArrayList<Move>();
+				// Up
+				temp.add(new Move(curCol, curRow-1));
+				// Down
+				temp.add(new Move(curCol, curRow+1));
+				// Left
+				temp.add(new Move(curCol-1, curRow));
+				// Right
+				temp.add(new Move(curCol+1, curRow));
+				// Up Right Diagonal
+				temp.add(new Move(curCol+1, curRow-1));
+				// Up Left Diagonal
+				temp.add(new Move(curCol-1, curRow-1));
+				// Down Right Diagonal
+				temp.add(new Move(curCol+1, curRow+1));
+				// Down Left Diagonal
+				temp.add(new Move(curCol-1, curRow+1));
+			} else {
+				temp = unknownPieceMoves(oppPiece);
+			}
+			if (temp != null && temp.size() > 0) {
+				kingMoveSet.removeAll(temp);
+			}
+		}
+		ArrayList<Move> retArr = new ArrayList<Move>(kingMoveSet);
+		printMoves(retArr);
+		if (retArr.size() == 0) {
+			return null;
+		} else {
+			return retArr;	
+		}
+	}
+	
+	private ArrayList<Move> unknownPieceMoves(Piece piece) {
+		ArrayList<Move> retArr = null;
+		char pType = Character.toLowerCase(piece.getType());
+		if (pType == 'r') {
+			retArr = getMovesRook(piece);
+		} else if (pType == 'n') {
+			retArr = getMovesKnight(piece);
+		} else if (pType == 'b') {
+			retArr = getMovesBishop(piece);
+		} else if (pType == 'k') {
+			retArr = getMovesKing(piece);
+		} else if (pType == 'q') {
+			retArr = getMovesQueen(piece);
+		} else if (pType == 'p') {
+			retArr = getMovesPawn(piece);
+		}
+		return retArr;
+	}
+	
+	private ArrayList<Move> pawnAttacks(Piece piece, int color) {
+		ArrayList<Move> retArr = new ArrayList<Move>();
+		int col = piece.getFile();
+		int row = piece.getRank();
+		// If pawn is white
+		if (color == 1 && Character.toLowerCase(piece.getType()) == 'p') {
+			// Up Left Diagonal
+			if ((0 <= row-1 && row-1 < this.rows) && (0 <= col-1 && col-1 < this.cols)) {
+				retArr.add(new Move(col-1, row-1));
+			}
+			// Up Right Diagonal
+			if ((0 <= row-1 && row-1 < this.rows) && (0 <= col+1 && col+1 < this.cols)) {
+				retArr.add(new Move(col+1, row-1));
+			}
+		} 
+		// If pawn is black
+		else if (color == 2 && Character.toLowerCase(piece.getType()) == 'p') {
+			// Up Left Diagonal
+			if ((0 <= row+1 && row+1 < this.rows) && (0 <= col+1 && col+1 < this.cols)) {
+				retArr.add(new Move(col+1, row+1));
+			}
+			// Up Right Diagonal
+			if ((0 <= row+1 && row+1 < this.rows) && (0 <= col-1 && col-1 < this.cols)) {
+				retArr.add(new Move(col-1, row+1));
+			}
 		}
 		if (retArr.size() == 0) {
 			return null;
@@ -312,21 +555,19 @@ public class ChessModel extends Observable {
 		}
 	}
 	
-	/* A king can move one square in any direction (horizontally, vertically, or diagonally),
-	   unless the square is already occupied by a friendly piece, or the move would place the
-	   king in check. The king is also involved in the special move of castling. */
-	private ArrayList<Move> getMovesKing(Piece curPiece) {
-		ArrayList<Move> retArr = new ArrayList<Move>();
-		if (curPiece.getType() == 'k') {
-			;
-		} else if (curPiece.getType() == 'K') {
-			;
+	// ------------------------- End of new untested movement logic ---------------------------------
+	
+	private void printMoves(ArrayList<Move> list) {
+		String print = "[";
+		boolean first = true;
+		for (Move m : list) {
+			if (first) {
+				print += "(" + m.getX() + "," + m.getY() + ")";
+			} else {
+				print += ", (" + m.getX() + "," + m.getY() + ")";
+			}
 		}
-		if (retArr.size() == 0) {
-			return null;
-		} else {
-			return retArr;	
-		}
+		System.out.println(print + "]");
 	}
 
 	public void makeMove(Move oldMove, Move newMove) {
@@ -350,6 +591,11 @@ public class ChessModel extends Observable {
 				rank++;
 			} else if (Character.isAlphabetic(piece)) {
 				Piece newPiece = new Piece(piece, file, rank);
+				if (Character.isUpperCase(piece)) {
+					this.whitePieces.add(newPiece);
+				} else {
+					this.blackPieces.add(newPiece);
+				}
 				chessBoard[rank][file] = newPiece;
 				file++;
 			} else if (!Character.isAlphabetic(piece)) {
