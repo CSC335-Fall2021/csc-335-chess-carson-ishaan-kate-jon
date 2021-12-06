@@ -9,7 +9,8 @@ import java.util.Observable;
 import java.util.Set;
 
 public class ChessModel extends Observable {
-
+	
+	private boolean isGameOver;
 	private boolean thisTurn = false;
 	Piece[][] chessBoard;
 	ArrayList<Piece> whitePieces;
@@ -20,6 +21,7 @@ public class ChessModel extends Observable {
 
 	public ChessModel() {
 		this(starterString, 8, 8);
+		this.isGameOver = false;
 	}
 
 	public ChessModel(String fenString) {
@@ -497,6 +499,7 @@ public class ChessModel extends Observable {
 		ArrayList<Move> retArr = new ArrayList<Move>(kingMoveSet);
 		printMoves(retArr);
 		if (retArr.size() == 0) {
+			this.isGameOver = isCheckmate(curPiece); // if king has no moves, call isCheckmate.
 			return null;
 		} else {
 			return retArr;	
