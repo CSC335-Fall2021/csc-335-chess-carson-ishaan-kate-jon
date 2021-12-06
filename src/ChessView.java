@@ -12,6 +12,7 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -307,9 +308,11 @@ public class ChessView extends Application implements Observer{
 						possibleMove = true;
 					}
 				}
-				if ((node instanceof Rectangle) && possibleMove == true) {
-					Rectangle temp = (Rectangle) node;
-					node.setStyle("-fx-background-color: "+ temp.getFill() +"; -fx-border-style: solid; -fx-border-width: 5; -fx-border-color: white; -fx-min-width: 20; -fx-min-height:20; -fx-max-width:20; -fx-max-height: 20;");
+				ObservableList<Node> children = curNode.getChildren();
+				if ((children.get(0) instanceof Rectangle) && possibleMove == true) {
+					System.out.println("This is true");
+					
+					((Rectangle) children.get(0)).setFill(Color.RED);
 				}
 				
 			}
