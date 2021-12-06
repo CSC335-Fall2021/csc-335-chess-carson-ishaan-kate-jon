@@ -94,12 +94,12 @@ public class ChessController {
 				try {
 					ChessMoveMessage otherMsg = (ChessMoveMessage)ois.readObject();
 					
-					//The runLater method places an event on the main
-					//thread's event queue. All things that change UI
-					//elements must be done on the main thread. 
+					//The runLater method places aings that change UI
+					//n event on the main
+					//thread's event queue. All thelements must be done on the main thread. 
 					Platform.runLater(() -> {
 						CurModel.setMyTurn(true);
-					//	model.addCircle(otherMsg.getX(), otherMsg.getY(), otherMsg.getColor());		
+						CurModel.makeMove(otherMsg.getoldMove(), otherMsg.getnewMove());
 					});
 					//We let the thread die after receiving one message.
 					//We'll create a new one on the next click.
@@ -134,7 +134,7 @@ public class ChessController {
 				
 				Platform.runLater(() -> {
 					CurModel.setMyTurn(true);
-				//	model.addCircle(otherMsg.getX(), otherMsg.getY(), otherMsg.getColor());
+					CurModel.makeMove(otherMsg.getoldMove(), otherMsg.getnewMove());
 				});
 			}
 			catch(IOException | ClassNotFoundException e) {

@@ -47,7 +47,7 @@ public class ChessView extends Application implements Observer{
 	private Color color1 = Color.INDIANRED;
 	private Color color2 = Color.ANTIQUEWHITE;
 	private int player = 0;
-	private boolean canClick = false;
+	public boolean canClick = true;
 	private Move prevPosition;
 			
 
@@ -67,6 +67,9 @@ public class ChessView extends Application implements Observer{
 	}
 	
 	private void setupHandlersOne() {
+		if (!canClick) {
+			return;
+		}
 		ObservableList<Node> stackList = chessGrid.getChildren();
 		for (Node node : stackList) {
 			StackPane curNode = (StackPane) node;
@@ -79,13 +82,18 @@ public class ChessView extends Application implements Observer{
 	@Override
 	public void update(Observable arg0, Object arg1) {
 		String curFenRep = (String) arg1;
+		canClick = controller.getModel().isMyTurn();
 		buildBoard(stage, curFenRep);
 		setupHandlersOne();
 	}
 
 	private void buildBoard(Stage stage, String fenRep) {
 		TabPane tabPane = new TabPane();
-		stage.setTitle("Chess");
+		if (this.stage == null) {
+			stage.setTitle("Chess");
+		} else {
+			stage.setTitle(this.stage.getTitle());
+		}
 		GridPane gridpane = new GridPane();
 		
 		for( int x = 0; x < 8; x++) {
@@ -143,18 +151,20 @@ public class ChessView extends Application implements Observer{
 				}
 			}
 		}
-
-		 Tab tab1 = new Tab("Board", gridpane);
-		 Tab tab2 = new Tab("Customize", CreateCustomization(stage));
-
-	    tabPane.getTabs().add(tab1);
-	    tabPane.getTabs().add(tab2);
-	    
-	    VBox vBox = new VBox(tabPane);
-		Scene scene = new Scene(vBox);
 		
 		this.stage = stage;
 		this.chessGrid = gridpane;
+
+		 Tab tab1 = new Tab("Board", gridpane);
+		 Tab tab2 = new Tab("Customize", CreateCustomization(this.stage));
+		 Tab tab3 = new Tab("Network", setupNetwork());
+
+	    tabPane.getTabs().add(tab1);
+	    tabPane.getTabs().add(tab2);
+	    tabPane.getTabs().add(tab3);
+	    
+	    VBox vBox = new VBox(tabPane);
+		Scene scene = new Scene(vBox);
 		
         this.stage.setScene(scene);
         this.stage.show();
@@ -229,6 +239,33 @@ public class ChessView extends Application implements Observer{
 		return vbox;
 	}
 
+	private VBox setupNetwork() {
+		VBox netVbox = new VBox();
+		
+		Button startServer = new Button("Start Server");
+		Button startClient = new Button("Start Client");
+		
+		startServer.setOnAction(event -> {
+			startClient.setDisable(true);
+			startServer.setDisable(true);
+			stage.setTitle("SERVER CHESS (Player 1)");
+			controller.startServer();
+		});
+		
+		startClient.setOnAction(event -> {
+			startClient.setDisable(true);
+			startServer.setDisable(true);
+			stage.setTitle("CLIENT CHESS (Player 2)");
+			canClick = false;
+			controller.startClient();
+		});
+		
+		netVbox.getChildren().add(startServer);
+		netVbox.getChildren().add(startClient);
+		netVbox.setSpacing(10);
+		return netVbox;
+	}
+	
 	private void ChangeColors(String text1, String text2, Stage stage) {
 		try {
 			Color temp1;
@@ -338,6 +375,7 @@ public class ChessView extends Application implements Observer{
 			StackPane curPane1 = (StackPane)arg0.getSource();
 			Move newPosition = new Move(chessGrid.getColumnIndex(curPane1), chessGrid.getRowIndex(curPane1));
 			controller.makePlayerMove(prevPosition, newPosition);
+			controller.getModel().setMyTurn(false);
 		}
 		
 	}

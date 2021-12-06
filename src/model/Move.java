@@ -1,5 +1,6 @@
 package model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
@@ -10,11 +11,12 @@ import java.util.ArrayList;
  * @author carsonchapman
  *
  */
-public class Move {
+public class Move implements Serializable{
 	
 	 private int file;
 	 private int rank;
-	 
+	 private static final long serialVersionUID = 1L;
+
 	 
 	 /**
 	  * This is a paramaterized constructor set in place to create the
