@@ -1,5 +1,6 @@
 
 
+import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -32,6 +33,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
+import model.Move;
 import model.Piece;
 
 public class ChessView extends Application implements Observer{
@@ -43,6 +45,8 @@ public class ChessView extends Application implements Observer{
 	private ChessController controller;
 	private Color color1 = Color.INDIANRED;
 	private Color color2 = Color.ANTIQUEWHITE;
+	private int player = 0;
+	private boolean canClick = false;
 			
 
 	@Override
@@ -52,6 +56,7 @@ public class ChessView extends Application implements Observer{
 			controller.getModel().addObserver(this);
 			
 			buildBoard(primaryStage, controller.getFenString());
+			setupHandlersOne();
 			
 
 		} catch(Exception e) {
@@ -59,6 +64,16 @@ public class ChessView extends Application implements Observer{
 		}
 	}
 	
+	private void setupHandlersOne() {
+		ObservableList<Node> stackList = chessGrid.getChildren();
+		for (Node node : stackList) {
+			StackPane curNode = (StackPane) node;
+			EventHandler<MouseEvent> mouseEvent = new MouseEvent1();
+			curNode.setOnMouseClicked(mouseEvent);
+		}
+		
+	}
+
 	@Override
 	public void update(Observable arg0, Object arg1) {
 		String curFenRep = (String) arg1;
@@ -136,6 +151,7 @@ public class ChessView extends Application implements Observer{
 		Scene scene = new Scene(vBox);
 		
 		this.stage = stage;
+		this.chessGrid = gridpane;
 		
         this.stage.setScene(scene);
         this.stage.show();
@@ -236,10 +252,84 @@ public class ChessView extends Application implements Observer{
 			//if theres an error with color it will go to default 
 		}
 		buildBoard(stage, controller.getFenString());
+		setupHandlersOne();
 	}
 
 	public static void main(String[] args) {
 		launch(args);
+	}
+	
+	/*
+	 * This class implements the first click of the turn, this will display to the 
+	 * user all possible moves they can make by highlighting the certain positions
+	 * on the board. This will be done with a helper method to update the handlers
+	 * on the nodes within the gridpane.
+	 */
+	private class MouseEvent1 implements EventHandler<MouseEvent> {
+
+		@Override
+		public void handle(MouseEvent arg0) {
+			StackPane curPane = (StackPane)arg0.getSource();
+			System.out.println("This node was clicked (file: " + chessGrid.getColumnIndex(curPane) + ") (rank:" + chessGrid.getRowIndex(curPane) + ")");
+			ObservableList<Node> stackContents = curPane.getChildren();
+			for (Node child : stackContents) {
+				if (child instanceof Label) {
+					Label curLabel = (Label)child;
+					if (curLabel.getText() == " ") {
+						return;
+					}
+					else if ((curLabel.getText().charAt(0) == Character.toUpperCase(curLabel.getText().charAt(0))) &&
+							  (player == 1 || player == 0)) { // is server or manual play
+						ArrayList<Move> moveLst = controller.getPossibleMoves(chessGrid.getColumnIndex(curPane), chessGrid.getRowIndex(curPane));
+						setupHandlers2(moveLst);
+						
+					}
+					else if ((curLabel.getText().charAt(0) == Character.toLowerCase(curLabel.getText().charAt(0))) &&
+							  player == 2 || player == 0) { // is client or manual player
+						ArrayList<Move> moveLst = controller.getPossibleMoves(chessGrid.getColumnIndex(curPane), chessGrid.getRowIndex(curPane));
+						setupHandlers2(moveLst);
+					}
+				}
+			}
+		}
+
+		private void setupHandlers2(ArrayList<Move> moveLst) {
+			ObservableList<Node> stackList = chessGrid.getChildren();
+			for (Node node : stackList) {
+				boolean possibleMove = false;
+				StackPane curNode = (StackPane) node;
+				curNode.setDisable(true);
+				for (Move curMove : moveLst) {
+					if (chessGrid.getColumnIndex(curNode) == curMove.getX() &&  chessGrid.getRowIndex(curNode) == curMove.getY()) {
+						curNode.setDisable(false);
+						EventHandler<MouseEvent> secondEvent = new MouseEvent2();
+						curNode.setOnMouseClicked(secondEvent);
+						possibleMove = true;
+					}
+				}
+				if ((node instanceof Rectangle) && possibleMove == true) {
+					Rectangle temp = (Rectangle) node;
+					node.setStyle("-fx-background-color: "+ temp.getFill() +"; -fx-border-style: solid; -fx-border-width: 5; -fx-border-color: white; -fx-min-width: 20; -fx-min-height:20; -fx-max-width:20; -fx-max-height: 20;");
+				}
+				
+			}
+			
+		}
+	}
+	
+	/*
+	 * This class implements the move logic. This handler will be placed on a node 
+	 * whenever there is a possible move to be made, therefore when this handle method
+	 * runs, it will send a message to the model making a logical wove within the game
+	 */
+	private class MouseEvent2 implements EventHandler<MouseEvent> {
+
+		@Override
+		public void handle(MouseEvent arg0) {
+			System.out.println("I am here");
+			
+		}
+		
 	}
 
 }

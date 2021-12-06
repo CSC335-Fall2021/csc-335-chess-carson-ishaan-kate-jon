@@ -8,21 +8,18 @@ public class ChessMoveMessage implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
 	
-	private int oldX; 
-	private int oldY; 
+	private Move oldMove; 
+	private Move newMove;
 	
-	private int newX; 
-	private int newY; 
-	
-	public ChessMoveMessage(int OldX, int OldY, int NewX, int NewY) {
-		this.oldX = OldX;
-		this.oldY = OldY;
-		this.newX = NewX;
-		this.newY = NewY;
+	public ChessMoveMessage(Move oldMove, Move newMove) {
+		this.oldMove = oldMove;
+		this.newMove = newMove;
 	}
 	
-	public int getOldX() { return oldX; }
-	public int getOldY() { return oldY; } 
-	public int getNewX() { return newX; }
-	public int getNewY() { return newY; }
+	public Move getoldMove() { return oldMove; }
+	public Move getnewMove() { return newMove; }
+	public int getOldX() 	 { return oldMove.getX(); }
+	public int getOldY() 	 { return oldMove.getY(); } 
+	public int getNewX() 	 { return newMove.getX(); }
+	public int getNewY() 	 { return newMove.getY(); }
 }
