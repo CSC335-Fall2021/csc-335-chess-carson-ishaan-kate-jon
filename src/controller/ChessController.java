@@ -37,6 +37,10 @@ public class ChessController {
 	public String getFenString() { // Retrieve encoded board
 		return CurModel.getFenString();
 	}
+	
+	public boolean getIsGameOver() {
+		return CurModel.getIsGameOver();
+	}
 
 	public void makePlayerMove(Move oldMove, Move newMove) { // Perform a player Move
 		CurModel.makeMove(oldMove, newMove);

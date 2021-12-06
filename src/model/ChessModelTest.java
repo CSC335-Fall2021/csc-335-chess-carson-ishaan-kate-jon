@@ -102,5 +102,16 @@ class ChessModelTest {
 		System.out.println(controller.getModel().chessBoard[3][0].getType());
 		System.out.println();
 	}
+	
+	@Test
+	void testIsGameOverStartOfGame() {
+		System.out.println("Creating New Game:");
+		ChessController controller = new ChessController();
+		String cmprString = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR";
+		System.out.println(controller.getFenString());
+		assertEquals(cmprString, controller.getFenString());
+		System.out.println();
+		assertFalse(controller.getIsGameOver());
+	}
 
 }

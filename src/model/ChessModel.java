@@ -653,4 +653,8 @@ public class ChessModel extends Observable {
 		}
 		return result;
 	}
+	
+	public boolean getIsGameOver() {
+		return this.isGameOver;
+	}
 }
