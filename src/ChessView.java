@@ -67,7 +67,7 @@ public class ChessView extends Application implements Observer{
 	}
 	
 	private void setupHandlersOne() {
-		if (!canClick) {
+		if (!this.canClick) {
 			return;
 		}
 		ObservableList<Node> stackList = chessGrid.getChildren();
@@ -82,7 +82,7 @@ public class ChessView extends Application implements Observer{
 	@Override
 	public void update(Observable arg0, Object arg1) {
 		String curFenRep = (String) arg1;
-		canClick = controller.getModel().isMyTurn();
+		this.canClick = controller.getModel().isMyTurn();
 		buildBoard(stage, curFenRep);
 		setupHandlersOne();
 	}
@@ -309,6 +309,7 @@ public class ChessView extends Application implements Observer{
 
 		@Override
 		public void handle(MouseEvent arg0) {
+			if (!canClick) {return;}
 			StackPane curPane = (StackPane)arg0.getSource();
 			System.out.println("This node was clicked (file: " + chessGrid.getColumnIndex(curPane) + ") (rank:" + chessGrid.getRowIndex(curPane) + ")");
 			prevPosition = new Move(chessGrid.getColumnIndex(curPane), chessGrid.getRowIndex(curPane));
@@ -375,7 +376,7 @@ public class ChessView extends Application implements Observer{
 			StackPane curPane1 = (StackPane)arg0.getSource();
 			Move newPosition = new Move(chessGrid.getColumnIndex(curPane1), chessGrid.getRowIndex(curPane1));
 			controller.makePlayerMove(prevPosition, newPosition);
-			controller.getModel().setMyTurn(false);
+			canClick = false;
 		}
 		
 	}

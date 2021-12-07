@@ -591,28 +591,28 @@ public class ChessModel extends Observable {
 		chessBoard[oldMove.getY()][oldMove.getX()] = emptyReplacement;
 		
 		// checking if game is over after move is made
-		ArrayList<Piece> oppPieces;
-		char king;
-		if (chessBoard[oldMove.getY()][oldMove.getX()].getColor() == 1) {
-			oppPieces = this.blackPieces;
-			king = 'k';
-		} else {
-			oppPieces = this.whitePieces;
-			king = 'K';
-		}
-		for (Piece oppPiece : oppPieces) {
-			if (oppPiece.getType() == king) {
-				getMovesKing(oppPiece);
-				break;
-			}
-			
-		}
-		
-		if (isGameOver) {
-			
-		} else {
-			
-		}
+//		ArrayList<Piece> oppPieces;
+//		char king;
+//		if (chessBoard[oldMove.getY()][oldMove.getX()].getColor() == 1) {
+//			oppPieces = this.blackPieces;
+//			king = 'k';
+//		} else {
+//			oppPieces = this.whitePieces;
+//			king = 'K';
+//		}
+//		for (Piece oppPiece : oppPieces) {
+//			if (oppPiece.getType() == king) {
+//				getMovesKing(oppPiece);
+//				break;
+//			}
+//			
+//		}
+//		
+//		if (isGameOver) {
+//			
+//		} else {
+//			
+//		}
 		
 		setChanged();
 		notifyObservers(getFenString());
