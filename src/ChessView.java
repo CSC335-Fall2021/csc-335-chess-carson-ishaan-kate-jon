@@ -323,19 +323,19 @@ public class ChessView extends Application implements Observer{
 					else if ((curLabel.getText().charAt(0) == Character.toUpperCase(curLabel.getText().charAt(0))) &&
 							  (player == 1 || player == 0)) { // is server or manual play
 						ArrayList<Move> moveLst = controller.getPossibleMoves(chessGrid.getColumnIndex(curPane), chessGrid.getRowIndex(curPane));
-						setupHandlers2(moveLst);
+						setupHandlers2(moveLst, curPane);
 						
 					}
 					else if ((curLabel.getText().charAt(0) == Character.toLowerCase(curLabel.getText().charAt(0))) &&
 							  player == 2 || player == 0) { // is client or manual player
 						ArrayList<Move> moveLst = controller.getPossibleMoves(chessGrid.getColumnIndex(curPane), chessGrid.getRowIndex(curPane));
-						setupHandlers2(moveLst);
+						setupHandlers2(moveLst, curPane);
 					}
 				}
 			}
 		}
 
-		private void setupHandlers2(ArrayList<Move> moveLst) {
+		private void setupHandlers2(ArrayList<Move> moveLst, StackPane curPane) {
 			if (moveLst == null) {
 				buildBoard(stage, controller.getFenString());
 				setupHandlersOne();
