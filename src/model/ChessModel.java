@@ -11,6 +11,7 @@ import java.util.Set;
 public class ChessModel extends Observable {
 	
 	private boolean isGameOver;
+	ArrayList<String> puzzles;
 	private boolean thisTurn = false;
 	Piece[][] chessBoard;
 	ArrayList<Piece> whitePieces;
@@ -39,6 +40,22 @@ public class ChessModel extends Observable {
 		} else {
 			createChessBoard(fenString);
 		}
+	}
+	
+	// 6 preset puzzles with one move to Checkmate. Preset puzzles in fenstring form.
+	// For future implementation of puzzles for player to choose a puzzle number to correspond to index
+	// of puzzles list containing a fenstring of a puzzle.
+	public ArrayList<String> puzzles() {
+		ArrayList<String> puzzleStrings = new ArrayList<String>();
+		puzzleStrings.add("8/p1k2pb1/r3p1p1/3n2Np/1B5P/PP1P1P2/K5P1/1Q6"); // e5 -> g4 to checkmate
+		puzzleStrings.add("k7/1Rp5/p1P1p3/5b2/8/1PQ5/1KP4q/8"); // f3 -> f5 to checkmate
+		puzzleStrings.add("1kr2b1r/1pp3pp/p1qpbn2/1N2pp2/P3P3/3P1P2/1PP2QPP/R1BK2NR"); // c2 -> h7 to checkmate
+		puzzleStrings.add("1kr4b/pppb4/2nq3p/8/5N2/1Q1BrP2/P1P3PP/1R1R1K2"); //g2 -> g7 to checkmate
+		puzzleStrings.add("1k6/ppp5/q7/7Q/2N5/1P6/P3Np2/b2K4"); // a5 -> d8 to checkmate
+		puzzleStrings.add("3R2r1/8/p1k2p2/1p5p/4n1pP/qP6/2P3PQ/1K1R4"); // d4 -> f3 to checkmate
+		
+		
+		return puzzleStrings;
 	}
 
 	public void setMyTurn(boolean mine) {
