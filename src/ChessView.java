@@ -5,37 +5,31 @@ import java.util.Observable;
 import java.util.Observer;
 
 import controller.ChessController;
+import javafx.animation.PathTransition;
 import javafx.application.Application;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
-import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Scene;
-import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.Menu;
-import javafx.scene.control.MenuBar;
-import javafx.scene.control.MenuItem;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
-import javafx.scene.layout.TilePane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.LineTo;
+import javafx.scene.shape.MoveTo;
+import javafx.scene.shape.Path;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 import model.Move;
-import model.Piece;
 
 public class ChessView extends Application implements Observer{
 	
@@ -49,6 +43,8 @@ public class ChessView extends Application implements Observer{
 	private int player = 0;
 	public boolean canClick = true;
 	private Move prevPosition;
+	private PathTransition pathTransitionAnimation;
+
 			
 
 	@Override
@@ -111,6 +107,7 @@ public class ChessView extends Application implements Observer{
 				}
 				stack.getChildren().add(rec);
 				gridpane.add(stack, x,y);
+		
 			}
 		}
 		
@@ -165,6 +162,7 @@ public class ChessView extends Application implements Observer{
 	    
 	    VBox vBox = new VBox(tabPane);
 		Scene scene = new Scene(vBox);
+		
 		
         this.stage.setScene(scene);
         this.stage.show();
@@ -350,6 +348,7 @@ public class ChessView extends Application implements Observer{
 					if (chessGrid.getColumnIndex(curNode) == curMove.getX() &&  chessGrid.getRowIndex(curNode) == curMove.getY()) {
 						curNode.setDisable(false);
 						EventHandler<MouseEvent> secondEvent = new MouseEvent2();
+						
 						curNode.setOnMouseClicked(secondEvent);
 						possibleMove = true;
 					}
@@ -363,6 +362,19 @@ public class ChessView extends Application implements Observer{
 			
 		}
 	}
+	private void startPathAnimation(Object object, int oldX, int oldY, int newX, int newY) {
+		
+		Path path = new Path();
+        path.getElements().add(new MoveTo(oldX, oldY));
+        path.getElements().add(new LineTo((newX - oldX) * 100, (newY- oldY) * 100));
+        PathTransition pathTransition = new PathTransition();
+        pathTransition.setDuration(Duration.millis(1000));
+        pathTransition.setPath(path);
+        pathTransition.setNode((Node) object);
+        pathTransition.setCycleCount(1);
+        pathTransition.setAutoReverse(true);
+        pathTransitionAnimation = pathTransition;
+	}
 	
 	/*
 	 * This class implements the move logic. This handler will be placed on a node 
@@ -373,9 +385,24 @@ public class ChessView extends Application implements Observer{
 
 		@Override
 		public void handle(MouseEvent arg0) {
+			int oldX = 0;
+			int oldY = 0;
+			Node node = null;
+			for (int i =0; i < chessGrid.getChildren().size(); i++) {
+				if(chessGrid.getColumnIndex(chessGrid.getChildren().get(i)) == prevPosition.getX() 
+						&& chessGrid.getRowIndex(chessGrid.getChildren().get(i)) == prevPosition.getY()) {
+					oldX = chessGrid.getColumnIndex(chessGrid.getChildren().get(i));
+					oldY = chessGrid.getRowIndex(chessGrid.getChildren().get(i));
+					node = (Node) ((StackPane) chessGrid.getChildren().get(i)).getChildren().get(1);
+
+				}
+			}
+			
 			StackPane curPane1 = (StackPane)arg0.getSource();
 			Move newPosition = new Move(chessGrid.getColumnIndex(curPane1), chessGrid.getRowIndex(curPane1));
-			controller.makePlayerMove(prevPosition, newPosition);
+			startPathAnimation(node, oldX, oldY, newPosition.getX(), newPosition.getY());
+			pathTransitionAnimation.play();
+			pathTransitionAnimation.setOnFinished(e -> controller.makePlayerMove(prevPosition, newPosition));
 			canClick = false;
 		}
 		
