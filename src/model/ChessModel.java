@@ -655,6 +655,9 @@ public class ChessModel extends Observable {
 		}
 		//Move kingSpot = new Move(king.getFile(), king.getRank());
 		ArrayList<Move> kingMoves = getMovesKingHelp(king);
+		if (kingMoves == null) {
+			return null;
+		}
 		for (Move move : kingMoves) {
 			for (Piece op : oppPieces) {
 				ArrayList<Move> oppPossibleMoves;
