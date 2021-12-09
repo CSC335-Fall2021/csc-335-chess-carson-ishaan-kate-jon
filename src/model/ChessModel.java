@@ -838,6 +838,24 @@ public class ChessModel extends Observable {
 	public String getFenString() {
 		return getFenString(this.chessBoard);
 	}
+	
+	public Piece getWhiteKing() {
+		for (Piece piece : this.whitePieces) {
+			if (piece.getType() == 'K') {
+				return piece;
+			}
+		}
+		return null;
+	}
+	
+	public Piece getBlackKing() {
+		for (Piece piece : this.blackPieces) {
+			if (piece.getType() == 'k') {
+				return piece;
+			}
+		}
+		return null;
+	}
 
 	public String getFenString(Piece[][] curboard) {
 		String result = "";
