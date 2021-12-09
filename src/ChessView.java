@@ -5,10 +5,12 @@ import java.util.Observable;
 import java.util.Observer;
 
 import controller.ChessController;
+import javafx.animation.FadeTransition;
 import javafx.animation.PathTransition;
 import javafx.application.Application;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
+import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Scene;
@@ -18,6 +20,7 @@ import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
@@ -155,10 +158,12 @@ public class ChessView extends Application implements Observer{
 		 Tab tab1 = new Tab("Board", gridpane);
 		 Tab tab2 = new Tab("Customize", CreateCustomization(this.stage));
 		 Tab tab3 = new Tab("Network", setupNetwork());
+		 Tab tab4 = new Tab("Puzzles", createPuzzle());
 
 	    tabPane.getTabs().add(tab1);
 	    tabPane.getTabs().add(tab2);
 	    tabPane.getTabs().add(tab3);
+	    tabPane.getTabs().add(tab4);
 	    
 	    VBox vBox = new VBox(tabPane);
 		Scene scene = new Scene(vBox);
@@ -166,6 +171,67 @@ public class ChessView extends Application implements Observer{
 		
         this.stage.setScene(scene);
         this.stage.show();
+	}
+
+	private Node createPuzzle() {
+		VBox vbox = new VBox();
+		
+		Label label = new Label ("Instructions: Each of these puzzles is one move away from checkmate\nChoose a puzzle:\n");
+		
+		Button puzzle1 = new Button("Puzzle 1");
+		Button puzzle2 = new Button("Puzzle 2");
+		Button puzzle3 = new Button("Puzzle 3");
+		Button puzzle4 = new Button("Puzzle 4");
+		Button puzzle5 = new Button("Puzzle 5");
+		Button puzzle6 = new Button("Puzzle 6");
+		
+		puzzle1.setOnAction(event -> {
+			controller = new ChessController(controller.getPuzzleFenString(1));
+			controller.getModel().addObserver(this);
+			buildBoard(new Stage(), controller.getFenString());
+			setupHandlersOne();
+		});
+		puzzle2.setOnAction(event -> {
+			controller = new ChessController(controller.getPuzzleFenString(2));
+			controller.getModel().addObserver(this);
+			buildBoard(new Stage(), controller.getFenString());
+			setupHandlersOne();
+		});
+		puzzle3.setOnAction(event -> {
+			controller = new ChessController(controller.getPuzzleFenString(3));
+			controller.getModel().addObserver(this);
+			buildBoard(new Stage(), controller.getFenString());
+			setupHandlersOne();
+		});
+		puzzle4.setOnAction(event -> {	
+			controller = new ChessController(controller.getPuzzleFenString(4));
+			controller.getModel().addObserver(this);
+			buildBoard(new Stage(), controller.getFenString());
+			setupHandlersOne();
+		});
+		puzzle5.setOnAction(event -> {
+			controller = new ChessController(controller.getPuzzleFenString(5));
+			controller.getModel().addObserver(this);
+			buildBoard(new Stage(), controller.getFenString());
+			setupHandlersOne();
+		});
+		puzzle6.setOnAction(event -> {	
+			controller = new ChessController(controller.getPuzzleFenString(6));
+			controller.getModel().addObserver(this);
+			buildBoard(new Stage(), controller.getFenString());
+			setupHandlersOne();
+		});
+		
+		vbox.getChildren().add(label);
+		vbox.getChildren().add(puzzle1);
+		vbox.getChildren().add(puzzle2);
+		vbox.getChildren().add(puzzle3);
+		vbox.getChildren().add(puzzle4);
+		vbox.getChildren().add(puzzle5);
+		vbox.getChildren().add(puzzle6);
+		vbox.setSpacing(10);
+		return vbox;
+	
 	}
 
 	private String getUnicodeValue(char piece) {
@@ -297,6 +363,10 @@ public class ChessView extends Application implements Observer{
 		launch(args);
 	}
 	
+	public void setCanClicked(boolean val) {
+		this.canClick = val;
+	}
+	
 	/*
 	 * This class implements the first click of the turn, this will display to the 
 	 * user all possible moves they can make by highlighting the certain positions
@@ -402,8 +472,10 @@ public class ChessView extends Application implements Observer{
 			Move newPosition = new Move(chessGrid.getColumnIndex(curPane1), chessGrid.getRowIndex(curPane1));
 			startPathAnimation(node, oldX, oldY, newPosition.getX(), newPosition.getY());
 			pathTransitionAnimation.play();
-			pathTransitionAnimation.setOnFinished(e -> controller.makePlayerMove(prevPosition, newPosition));
-			canClick = false;
+			pathTransitionAnimation.setOnFinished(e -> {
+				controller.makePlayerMove(prevPosition, newPosition);
+				setCanClicked(false);
+			});
 		}
 		
 	}

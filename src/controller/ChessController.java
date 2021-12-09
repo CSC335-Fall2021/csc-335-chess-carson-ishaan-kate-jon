@@ -73,6 +73,10 @@ public class ChessController {
 			System.err.println("Something went wrong with the network! " + e.getMessage());
 		}
 	}
+	public String getPuzzleFenString(int i) {
+		ArrayList<String> puzzles = CurModel.puzzles();
+		return puzzles.get(i-1);
+	}
 	
 	public void startClient() {
 		try {
@@ -145,5 +149,6 @@ public class ChessController {
 		t.start();
 		
 	}
+	
 
 }
