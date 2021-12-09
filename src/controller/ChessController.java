@@ -291,8 +291,10 @@ public class ChessController {
 				Move oldSpot = new Move(p.getFile(), p.getRank());
 				Move newSpot = new Move(availableMoves.get(y).getX(), availableMoves.get(y).getY());
 				makePlayerMove(oldSpot, newSpot);
+				break;
 			}
 		}
+		return;
 	}
 	
 
