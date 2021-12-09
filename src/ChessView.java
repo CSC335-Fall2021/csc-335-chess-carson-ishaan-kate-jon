@@ -5,10 +5,12 @@ import java.util.Observable;
 import java.util.Observer;
 
 import controller.ChessController;
+import javafx.animation.FadeTransition;
 import javafx.animation.PathTransition;
 import javafx.application.Application;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
+import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Scene;
@@ -18,6 +20,7 @@ import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
@@ -155,10 +158,12 @@ public class ChessView extends Application implements Observer{
 		 Tab tab1 = new Tab("Board", gridpane);
 		 Tab tab2 = new Tab("Customize", CreateCustomization(this.stage));
 		 Tab tab3 = new Tab("Network", setupNetwork());
+		 Tab tab4 = new Tab("Puzzles", createPuzzle());
 
 	    tabPane.getTabs().add(tab1);
 	    tabPane.getTabs().add(tab2);
 	    tabPane.getTabs().add(tab3);
+	    tabPane.getTabs().add(tab4);
 	    
 	    VBox vBox = new VBox(tabPane);
 		Scene scene = new Scene(vBox);
@@ -166,6 +171,49 @@ public class ChessView extends Application implements Observer{
 		
         this.stage.setScene(scene);
         this.stage.show();
+	}
+
+	private Node createPuzzle() {
+		VBox vbox = new VBox();
+		
+		Label label = new Label ("Instructions: Each of these puzzles is one move away from checkmate\nChoose a puzzle:\n");
+		
+		Button puzzle1 = new Button("Puzzle 1");
+		Button puzzle2 = new Button("Puzzle 2");
+		Button puzzle3 = new Button("Puzzle 3");
+		Button puzzle4 = new Button("Puzzle 4");
+		Button puzzle5 = new Button("Puzzle 5");
+		Button puzzle6 = new Button("Puzzle 6");
+		
+		puzzle1.setOnAction(event -> {
+			buildBoard(stage, controller.getPuzzleFenString(1));
+		});
+		puzzle2.setOnAction(event -> {
+			buildBoard(stage, controller.getPuzzleFenString(2));
+		});
+		puzzle3.setOnAction(event -> {
+			buildBoard(stage, controller.getPuzzleFenString(3));
+		});
+		puzzle4.setOnAction(event -> {	
+			buildBoard(stage, controller.getPuzzleFenString(4));
+		});
+		puzzle5.setOnAction(event -> {
+			buildBoard(stage, controller.getPuzzleFenString(5));
+		});
+		puzzle6.setOnAction(event -> {	
+			buildBoard(stage, controller.getPuzzleFenString(6));
+		});
+		
+		vbox.getChildren().add(label);
+		vbox.getChildren().add(puzzle1);
+		vbox.getChildren().add(puzzle2);
+		vbox.getChildren().add(puzzle3);
+		vbox.getChildren().add(puzzle4);
+		vbox.getChildren().add(puzzle5);
+		vbox.getChildren().add(puzzle6);
+		vbox.setSpacing(10);
+		return vbox;
+	
 	}
 
 	private String getUnicodeValue(char piece) {
