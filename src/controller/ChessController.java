@@ -28,6 +28,7 @@ public class ChessController {
 	private boolean isConnected = false;
 	private boolean isPuzzle = false;
 	private int puzzleNum = 0;
+	private boolean puzzleWin = false;
 	
 	ObjectOutputStream oos;
 	ObjectInputStream ois;
@@ -98,10 +99,16 @@ public class ChessController {
 	 * by physically changing the color of the tiles for each move adding a new handler 
 	 * to it. This new handler will then be sent through the makePlayerMove
 	 */
-
+	
+	public boolean getPuzzleWin() {
+		return puzzleWin;
+	}
+	
 	public void makePuzzleMove(Move oldMove, Move newMove) { // Perform a player Move
 		if (this.puzzleNum == 1) {
-			
+			if (oldMove.getX() == 3 && oldMove.getY() == 3 && newMove.getX() == 1 && newMove.getY() == 4) {
+				this.puzzleWin = true;
+			}
 		}
 		if (this.puzzleNum == 2) {
 			
