@@ -25,6 +25,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
@@ -225,12 +226,37 @@ public class ChessView extends Application implements Observer{
 		
 		Label label = new Label ("Instructions: Each of these puzzles is one move away from checkmate\nChoose a puzzle:\n");
 		
+	
 		Button puzzle1 = new Button("Puzzle 1");
+		Label label1 = new Label ("  Black to win");
+		HBox hbox1 = new HBox();
+		hbox1.getChildren().addAll(puzzle1, label1);
+		
 		Button puzzle2 = new Button("Puzzle 2");
+		Label label2 = new Label ("  White to win");
+		HBox hbox2 = new HBox();
+		hbox2.getChildren().addAll(puzzle2, label2);
+		
 		Button puzzle3 = new Button("Puzzle 3");
+		Label label3 = new Label ("  White to win");
+		HBox hbox3 = new HBox();
+		hbox3.getChildren().addAll(puzzle3, label3);
+		
+		
 		Button puzzle4 = new Button("Puzzle 4");
+		Label label4 = new Label ("  White to win");
+		HBox hbox4 = new HBox();
+		hbox4.getChildren().addAll(puzzle4, label4);
+		
 		Button puzzle5 = new Button("Puzzle 5");
+		Label label5 = new Label ("  White to win");
+		HBox hbox5 = new HBox();
+		hbox5.getChildren().addAll(puzzle5, label5);
+		
 		Button puzzle6 = new Button("Puzzle 6");
+		Label label6 = new Label ("  Black to win");
+		HBox hbox6 = new HBox();
+		hbox6.getChildren().addAll(puzzle6, label6);
 		
 		puzzle1.setOnAction(event -> {
 			controller = new ChessController(controller.getPuzzleFenString(1));
@@ -282,12 +308,12 @@ public class ChessView extends Application implements Observer{
 		});
 		
 		vbox.getChildren().add(label);
-		vbox.getChildren().add(puzzle1);
-		vbox.getChildren().add(puzzle2);
-		vbox.getChildren().add(puzzle3);
-		vbox.getChildren().add(puzzle4);
-		vbox.getChildren().add(puzzle5);
-		vbox.getChildren().add(puzzle6);
+		vbox.getChildren().add(hbox1);
+		vbox.getChildren().add(hbox2);
+		vbox.getChildren().add(hbox3);
+		vbox.getChildren().add(hbox4);
+		vbox.getChildren().add(hbox5);
+		vbox.getChildren().add(hbox6);
 		vbox.setSpacing(10);
 		return vbox;
 	
