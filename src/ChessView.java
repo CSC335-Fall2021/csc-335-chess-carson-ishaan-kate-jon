@@ -103,15 +103,6 @@ public class ChessView extends Application implements Observer{
 	*/
 	@Override
 	public void update(Observable arg0, Object arg1) {
-		
-		if (controller.isPuzzle() && controller.getPuzzleWin() ) {
-			final Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-			final Scene scene = alert.getDialogPane().getScene();
-			alert.setTitle("Message");
-			alert.setHeaderText("Message");
-			alert.setContentText("You Win!");
-			Platform.runLater(alert::showAndWait);
-		}
 		String curFenRep = (String) arg1;
 		this.canClick = controller.getModel().isMyTurn();
 		buildBoard(stage, curFenRep);
@@ -591,11 +582,31 @@ public class ChessView extends Application implements Observer{
 			}
 			
 			StackPane curPane1 = (StackPane)arg0.getSource();
+
 			Move newPosition = new Move(chessGrid.getColumnIndex(curPane1), chessGrid.getRowIndex(curPane1));
 			setupPathAnimation(node, oldX, oldY, newPosition.getX(), newPosition.getY());
 			pathTransitionAnimation.play();
 			pathTransitionAnimation.setOnFinished(e -> {
-				controller.makePlayerMove(prevPosition, newPosition);
+				if (controller.isPuzzle()) {
+					controller.makePuzzleMove(prevPosition, newPosition);
+					if (controller.getPuzzleWin() ) {
+						final Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+						final Scene scene = alert.getDialogPane().getScene();
+						alert.setTitle("Message");
+						alert.setHeaderText("Message");
+						alert.setContentText("You Win!");
+						Platform.runLater(alert::showAndWait);
+					} else {
+						final Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+						final Scene scene = alert.getDialogPane().getScene();
+						alert.setTitle("Message");
+						alert.setHeaderText("Message");
+						alert.setContentText("You Lose!");
+						Platform.runLater(alert::showAndWait);
+					}
+				} else {
+					controller.makePlayerMove(prevPosition, newPosition);
+				}
 				setCanClicked(false);
 			});
 		}
