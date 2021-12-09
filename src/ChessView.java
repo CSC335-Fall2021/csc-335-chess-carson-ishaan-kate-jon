@@ -8,12 +8,14 @@ import controller.ChessController;
 import javafx.animation.FadeTransition;
 import javafx.animation.PathTransition;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Tab;
@@ -101,6 +103,15 @@ public class ChessView extends Application implements Observer{
 	*/
 	@Override
 	public void update(Observable arg0, Object arg1) {
+		
+		if (controller.isPuzzle() && controller.getPuzzleWin() ) {
+			final Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+			final Scene scene = alert.getDialogPane().getScene();
+			alert.setTitle("Message");
+			alert.setHeaderText("Message");
+			alert.setContentText("You Win!");
+			Platform.runLater(alert::showAndWait);
+		}
 		String curFenRep = (String) arg1;
 		this.canClick = controller.getModel().isMyTurn();
 		buildBoard(stage, curFenRep);
@@ -225,36 +236,48 @@ public class ChessView extends Application implements Observer{
 			controller.getModel().addObserver(this);
 			buildBoard(new Stage(), controller.getFenString());
 			setupHandlersOne();
+			controller.setPuzzle();
+			controller.setPuzzleNum(1);
 		});
 		puzzle2.setOnAction(event -> {
 			controller = new ChessController(controller.getPuzzleFenString(2));
 			controller.getModel().addObserver(this);
 			buildBoard(new Stage(), controller.getFenString());
 			setupHandlersOne();
+			controller.setPuzzle();
+			controller.setPuzzleNum(2);
 		});
 		puzzle3.setOnAction(event -> {
 			controller = new ChessController(controller.getPuzzleFenString(3));
 			controller.getModel().addObserver(this);
 			buildBoard(new Stage(), controller.getFenString());
 			setupHandlersOne();
+			controller.setPuzzle();
+			controller.setPuzzleNum(3);
 		});
 		puzzle4.setOnAction(event -> {	
 			controller = new ChessController(controller.getPuzzleFenString(4));
 			controller.getModel().addObserver(this);
 			buildBoard(new Stage(), controller.getFenString());
 			setupHandlersOne();
+			controller.setPuzzle();
+			controller.setPuzzleNum(4);
 		});
 		puzzle5.setOnAction(event -> {
 			controller = new ChessController(controller.getPuzzleFenString(5));
 			controller.getModel().addObserver(this);
 			buildBoard(new Stage(), controller.getFenString());
 			setupHandlersOne();
+			controller.setPuzzle();
+			controller.setPuzzleNum(5);
 		});
 		puzzle6.setOnAction(event -> {	
 			controller = new ChessController(controller.getPuzzleFenString(6));
 			controller.getModel().addObserver(this);
 			buildBoard(new Stage(), controller.getFenString());
 			setupHandlersOne();
+			controller.setPuzzle();
+			controller.setPuzzleNum(6);
 		});
 		
 		vbox.getChildren().add(label);

@@ -26,6 +26,9 @@ public class ChessController {
 	private Socket connection;
 	private boolean isServer = false;
 	private boolean isConnected = false;
+	private boolean isPuzzle = false;
+	private int puzzleNum = 0;
+	private boolean puzzleWin = false;
 	
 	ObjectOutputStream oos;
 	ObjectInputStream ois;
@@ -68,6 +71,14 @@ public class ChessController {
 	public boolean getIsGameOver() {
 		return CurModel.getIsGameOver();
 	}
+	
+	public void setPuzzle() {
+		this.isPuzzle = true;
+	}
+	
+	public void setPuzzleNum(int num) {
+		this.puzzleNum = num;
+	}
 
 	/**
 	 * This method is called within the view to make a move to the board. This method 
@@ -79,6 +90,37 @@ public class ChessController {
 		CurModel.makeMove(oldMove, newMove);
 		ChessMoveMessage message = new ChessMoveMessage(oldMove, newMove);
 		sendMessage(message);
+	}
+
+	
+	public boolean getPuzzleWin() {
+		return false;
+	}
+	
+	public void makePuzzleMove(Move oldMove, Move newMove) { // Perform a player Move
+		if (this.puzzleNum == 1) {
+			if (oldMove.getX() == 3 && oldMove.getY() == 3 && newMove.getX() == 1 && newMove.getY() == 4) {
+				this.puzzleWin = true;
+			}
+		}
+		if (this.puzzleNum == 2) {
+			
+		}
+		if (this.puzzleNum == 3) {
+			
+		}
+		if (this.puzzleNum == 4) {
+			
+		}
+		if (this.puzzleNum == 5) {
+			
+		}
+		if (this.puzzleNum == 6) {
+			
+		}
+//		CurModel.makeMove(oldMove, newMove);
+//		ChessMoveMessage message = new ChessMoveMessage(oldMove, newMove);
+//		sendMessage(message);
 	}
 	
 	/**
@@ -209,6 +251,10 @@ public class ChessController {
 		});
 		t.start();
 		
+	}
+	
+	public boolean isPuzzle() {
+		return isPuzzle;
 	}
 	
 
