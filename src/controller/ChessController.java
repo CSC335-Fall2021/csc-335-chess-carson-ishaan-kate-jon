@@ -26,6 +26,9 @@ public class ChessController {
 	private Socket connection;
 	public boolean isServer = false;
 	private boolean isConnected = false;
+	private boolean isPuzzle = false;
+	private int puzzleNum = 0;
+	private boolean puzzleWin = false;
 	
 	ObjectOutputStream oos;
 	ObjectInputStream ois;
@@ -68,6 +71,14 @@ public class ChessController {
 	public boolean getIsGameOver() {
 		return CurModel.getIsGameOver();
 	}
+	
+	public void setPuzzle() {
+		this.isPuzzle = true;
+	}
+	
+	public void setPuzzleNum(int num) {
+		this.puzzleNum = num;
+	}
 
 	/**
 	 * This method is called within the view to make a move to the board. This method 
@@ -79,6 +90,47 @@ public class ChessController {
 		CurModel.makeMove(oldMove, newMove);
 		ChessMoveMessage message = new ChessMoveMessage(oldMove, newMove);
 		sendMessage(message);
+	}
+
+	
+	public boolean getPuzzleWin() {
+		return this.puzzleWin;
+	}
+	
+	public void makePuzzleMove(Move oldMove, Move newMove) { // Perform a player Move
+		if (this.puzzleNum == 1) {
+			if (oldMove.getX() == 3 && oldMove.getY() == 3 && newMove.getX() == 1 && newMove.getY() == 4) {
+				this.puzzleWin = true;
+			} 
+		}
+		if (this.puzzleNum == 2) {
+			if (oldMove.getX() == 2 && oldMove.getY() == 5 && newMove.getX() == 7 && newMove.getY() == 0) {
+				this.puzzleWin = true;
+			}
+		}
+		if (this.puzzleNum == 3) {
+			if (oldMove.getX() == 5 && oldMove.getY() == 6 && newMove.getX() == 0 && newMove.getY() == 1) {
+				this.puzzleWin = true;
+			}
+		}
+		if (this.puzzleNum == 4) {
+			if (oldMove.getX() == 1 && oldMove.getY() == 5 && newMove.getX() == 1 && newMove.getY() == 1) {
+				this.puzzleWin = true;
+			}
+		} 
+		if (this.puzzleNum == 5) {
+			if (oldMove.getX() == 7 && oldMove.getY() == 3 && newMove.getX() == 4 && newMove.getY() == 0) {
+				this.puzzleWin = true;
+			}
+		}
+		if (this.puzzleNum == 6) {
+			if (oldMove.getX() == 4 && oldMove.getY() == 4 && newMove.getX() == 2 && newMove.getY() == 5) {
+				this.puzzleWin = true;
+			}
+		}
+//		CurModel.makeMove(oldMove, newMove);
+//		ChessMoveMessage message = new ChessMoveMessage(oldMove, newMove);
+//		sendMessage(message);
 	}
 	
 	/**
@@ -209,6 +261,10 @@ public class ChessController {
 		});
 		t.start();
 		
+	}
+	
+	public boolean isPuzzle() {
+		return isPuzzle;
 	}
 	
 
