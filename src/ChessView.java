@@ -181,6 +181,16 @@ public class ChessView extends Application implements Observer{
 			}
 		}
 		
+		// Checking for end of game
+		boolean whiteCheck = false;
+		boolean blackCheck = false;
+		
+		// Checks for both kings
+		
+		
+		// If whiteCheck, alert White has won
+		// If blackCheck, alert black has won
+		
 		this.stage = stage;
 		this.chessGrid = gridpane;
 

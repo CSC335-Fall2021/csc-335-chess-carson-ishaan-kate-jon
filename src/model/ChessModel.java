@@ -11,11 +11,11 @@ import java.util.Set;
 public class ChessModel extends Observable {
 	
 	private boolean isGameOver;
-	ArrayList<String> puzzles;
+	public ArrayList<String> puzzles;
 	private boolean thisTurn = false;
-	Piece[][] chessBoard;
-	ArrayList<Piece> whitePieces;
-	ArrayList<Piece> blackPieces;
+	public Piece[][] chessBoard;
+	public ArrayList<Piece> whitePieces;
+	public ArrayList<Piece> blackPieces;
 	private final int rows;
 	private final int cols;
 	private static final String starterString = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR";

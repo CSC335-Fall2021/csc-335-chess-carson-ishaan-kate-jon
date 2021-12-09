@@ -24,7 +24,7 @@ public class ChessController {
 
 	private ChessModel CurModel;
 	private Socket connection;
-	private boolean isServer = false;
+	public boolean isServer = false;
 	private boolean isConnected = false;
 	
 	ObjectOutputStream oos;
