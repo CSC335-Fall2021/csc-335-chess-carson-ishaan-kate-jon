@@ -690,7 +690,16 @@ public class ChessView extends Application implements Observer{
 					setCanClicked(true);
 				}
 				if (!controller.getIsConnected()) {
-					controller.makeRandomMove();
+					boolean check = false;
+					while(check == false) {
+						try {
+							controller.makeRandomMove();
+							check = true;
+						} catch(Exception E) {
+							check = false;
+					}
+					}
+					setCanClicked(true);
 				}
 			});
 		}
