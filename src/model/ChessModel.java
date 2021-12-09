@@ -421,25 +421,14 @@ public class ChessModel extends Observable {
 	}
 	
 	public ArrayList<Move> getMovesKing(Piece king) {
+		ArrayList<Move> temp = illegalMoveCheck(king);
 		ArrayList<Move> moves = getMovesKingHelp(king); // get all possible moves for king
-		if (moves.equals(null)) { // if no moves, return true
+		if (moves == null) { // if no moves, return true
 			return null;
-		} else {
-			Move kingSpot = new Move(king.getFile(), king.getRank()); // save king cur spot
-			for (Move mv : moves) { // loop through every possible move king can make 
-				Piece movePiece = chessBoard[mv.getY()][mv.getX()];
-				isCheckmateHelper(kingSpot, mv); // make the move
-				if (isCheck(chessBoard[mv.getX()][mv.getY()])) { // use isCheck to see if new spot is illegal
-					moves.remove(mv);
-					isCheckmateHelper(mv, kingSpot); // if move puts king in check, reverse the move made 
-					chessBoard[mv.getY()][mv.getX()] = movePiece;
-				} else {
-					isCheckmateHelper(mv, kingSpot); // else, reverse the move made for next move
-					chessBoard[mv.getY()][mv.getX()] = movePiece;
-				}
-			}
+		} 
+		if (temp != null) {
+			moves.removeAll(temp);
 		}
-			
 		return moves;
 	}
 	
@@ -620,35 +609,35 @@ public class ChessModel extends Observable {
 			// pawn
 			if (op.getType() == 'p' || op.getType() == 'P') {
 				oppPossibleMoves = getMovesPawn(op);
-				if (oppPossibleMoves.contains(kingSpot)) {
+				if (oppPossibleMoves != null && oppPossibleMoves.contains(kingSpot)) {
 					return true;
 				}
 			}
 			// rook
 			if (op.getType() == 'r' || op.getType() == 'R') {
 				oppPossibleMoves = getMovesRook(op);
-				if (oppPossibleMoves.contains(kingSpot)) {
+				if (oppPossibleMoves != null && oppPossibleMoves.contains(kingSpot)) {
 					return true;
 				}
 			}
 			// knight
 			if (op.getType() == 'n' || op.getType() == 'N') {
 				oppPossibleMoves = getMovesKnight(op);
-				if (oppPossibleMoves.contains(kingSpot)) {
+				if (oppPossibleMoves != null && oppPossibleMoves.contains(kingSpot)) {
 					return true;
 				}
 			}
 			// bishop
 			if (op.getType() == 'b' || op.getType() == 'B') {
 				oppPossibleMoves = getMovesBishop(op);
-				if (oppPossibleMoves.contains(kingSpot)) {
+				if (oppPossibleMoves != null && oppPossibleMoves.contains(kingSpot)) {
 					return true;
 				}
 			}
 			// queen
 			if (op.getType() == 'q' || op.getType() == 'Q') {
 				oppPossibleMoves = getMovesQueen(op);
-				if (oppPossibleMoves.contains(kingSpot)) {
+				if (oppPossibleMoves != null && oppPossibleMoves.contains(kingSpot)) {
 					return true;
 				}
 			}
@@ -670,37 +659,37 @@ public class ChessModel extends Observable {
 			for (Piece op : oppPieces) {
 				ArrayList<Move> oppPossibleMoves;
 				// pawn
-				if (op.getType() == 'p' || op.getType() == 'P') {
-					oppPossibleMoves = getMovesPawn(op);
-					if (oppPossibleMoves.contains(move)) {
-						illegalMoves.add(move);
-					}
-				}
+//				if (op.getType() == 'p' || op.getType() == 'P') {
+//					oppPossibleMoves = getMovesPawn(op);
+//					if (oppPossibleMoves != null && oppPossibleMoves.contains(move)) {
+//						illegalMoves.add(move);
+//					}
+//				}
 				// rook
 				if (op.getType() == 'r' || op.getType() == 'R') {
 					oppPossibleMoves = getMovesRook(op);
-					if (oppPossibleMoves.contains(move)) {
+					if (oppPossibleMoves != null && oppPossibleMoves.contains(move)) {
 						illegalMoves.add(move);
 					}
 				}
 				// knight
 				if (op.getType() == 'n' || op.getType() == 'N') {
 					oppPossibleMoves = getMovesKnight(op);
-					if (oppPossibleMoves.contains(move)) {
+					if (oppPossibleMoves != null && oppPossibleMoves.contains(move)) {
 						
 					}
 				}
 				// bishop
 				if (op.getType() == 'b' || op.getType() == 'B') {
 					oppPossibleMoves = getMovesBishop(op);
-					if (oppPossibleMoves.contains(move)) {
+					if (oppPossibleMoves != null && oppPossibleMoves.contains(move)) {
 						illegalMoves.add(move);
 					}
 				}
 				// queen
 				if (op.getType() == 'q' || op.getType() == 'Q') {
 					oppPossibleMoves = getMovesQueen(op);
-					if (oppPossibleMoves.contains(move)) {
+					if (oppPossibleMoves != null && oppPossibleMoves.contains(move)) {
 						illegalMoves.add(move);
 					}
 				}
@@ -722,7 +711,7 @@ public class ChessModel extends Observable {
 			return false;
 		} else {
 			ArrayList<Move> moves = getMovesKingHelp(king); // get all possible moves for king
-			if (moves.equals(null)) { // if no moves, return true
+			if (moves == null) { // if no moves, return true
 				return true;
 			} else {
 				Move kingSpot = new Move(king.getFile(), king.getRank()); // save king cur spot
