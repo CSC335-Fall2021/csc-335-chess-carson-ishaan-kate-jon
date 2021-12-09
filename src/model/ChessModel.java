@@ -704,11 +704,14 @@ public class ChessModel extends Observable {
 			} else {
 				Move kingSpot = new Move(king.getFile(), king.getRank()); // save king cur spot
 				for (Move mv : moves) { // loop through every possible move king can make 
+					Piece movePiece = chessBoard[mv.getY()][mv.getX()];
 					isCheckmateHelper(kingSpot, mv); // make the move
 					if (isCheck(chessBoard[mv.getX()][mv.getY()])) { // use isCheck to see if new spot is illegal
 						isCheckmateHelper(mv, kingSpot); // if move puts king in check, reverse the move made 
+						chessBoard[mv.getY()][mv.getX()] = movePiece;
 					} else {
 						isCheckmateHelper(mv, kingSpot); // else, reverse the move made for next move
+						chessBoard[mv.getY()][mv.getX()] = movePiece;
 						return false;
 					}
 				}
@@ -729,6 +732,8 @@ public class ChessModel extends Observable {
 		chessBoard[newMove.getY()][newMove.getX()].setY(newMove.getY());
 		chessBoard[oldMove.getY()][oldMove.getX()] = emptyReplacement;
 	}
+	
+	
 	
 	// ------------------------- End of new untested movement logic ---------------------------------
 	
