@@ -650,11 +650,11 @@ public class ChessModel extends Observable {
 			} else {
 				Move kingSpot = new Move(king.getFile(), king.getRank()); // save king cur spot
 				for (Move mv : moves) { // loop through every possible move king can make 
-					makeMove(kingSpot, mv); // make the move
+					isCheckmateHelper(kingSpot, mv); // make the move
 					if (isCheck(chessBoard[mv.getX()][mv.getY()])) { // use isCheck to see if new spot is illegal
-						makeMove(mv, kingSpot); // if move puts king in check, reverse the move made 
+						isCheckmateHelper(mv, kingSpot); // if move puts king in check, reverse the move made 
 					} else {
-						makeMove(mv, kingSpot); // else, reverse the move made for next move
+						isCheckmateHelper(mv, kingSpot); // else, reverse the move made for next move
 						return false;
 					}
 				}
@@ -662,6 +662,18 @@ public class ChessModel extends Observable {
 			
 		}
 		return true;
+	}
+	
+	// This is a helper function and does what makeMoves does except doesn't change the the graphic side
+	// This is to make a move to check if the king would be in check after making that move, resulting in an illegal move
+	// This function is only used in isCheckMate and is used to reverse what it was used for, each time it is used so that nothing is
+	// actually changed in the board.
+	public void isCheckmateHelper(Move oldMove, Move newMove) {
+		Piece emptyReplacement = new Piece(' ', oldMove.getX(), oldMove.getY());
+		chessBoard[newMove.getY()][newMove.getX()] = chessBoard[oldMove.getY()][oldMove.getX()];
+		chessBoard[newMove.getY()][newMove.getX()].setX(newMove.getX());
+		chessBoard[newMove.getY()][newMove.getX()].setY(newMove.getY());
+		chessBoard[oldMove.getY()][oldMove.getX()] = emptyReplacement;
 	}
 	
 	// ------------------------- End of new untested movement logic ---------------------------------
