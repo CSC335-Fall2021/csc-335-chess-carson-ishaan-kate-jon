@@ -24,7 +24,7 @@ public class ChessController {
 
 	private ChessModel CurModel;
 	private Socket connection;
-	private boolean isServer = false;
+	public boolean isServer = false;
 	private boolean isConnected = false;
 	private boolean isPuzzle = false;
 	private int puzzleNum = 0;
@@ -94,7 +94,7 @@ public class ChessController {
 
 	
 	public boolean getPuzzleWin() {
-		return puzzleWin;
+		return this.puzzleWin;
 	}
 	
 	public void makePuzzleMove(Move oldMove, Move newMove) { // Perform a player Move

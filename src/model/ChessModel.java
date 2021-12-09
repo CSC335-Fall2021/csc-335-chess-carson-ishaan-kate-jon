@@ -11,11 +11,11 @@ import java.util.Set;
 public class ChessModel extends Observable {
 	
 	private boolean isGameOver;
-	ArrayList<String> puzzles;
+	public ArrayList<String> puzzles;
 	private boolean thisTurn = false;
-	Piece[][] chessBoard;
-	ArrayList<Piece> whitePieces;
-	ArrayList<Piece> blackPieces;
+	public Piece[][] chessBoard;
+	public ArrayList<Piece> whitePieces;
+	public ArrayList<Piece> blackPieces;
 	private final int rows;
 	private final int cols;
 	private static final String starterString = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR";
@@ -631,6 +631,60 @@ public class ChessModel extends Observable {
 			}
 		}
 		return false;
+	}
+	
+	public ArrayList<Move> illegalMoveCheck(Piece king) {
+		ArrayList<Move> illegalMoves = new ArrayList<Move>();
+		ArrayList<Piece> oppPieces;
+		if (king.getColor() == 1) {
+			oppPieces = this.blackPieces;
+		} else {
+			oppPieces = this.whitePieces;
+		}
+		//Move kingSpot = new Move(king.getFile(), king.getRank());
+		ArrayList<Move> kingMoves = getMovesKing(king);
+		for (Move move : kingMoves) {
+			for (Piece op : oppPieces) {
+				ArrayList<Move> oppPossibleMoves;
+				// pawn
+				if (op.getType() == 'p' || op.getType() == 'P') {
+					oppPossibleMoves = getMovesPawn(op);
+					if (oppPossibleMoves.contains(move)) {
+						illegalMoves.add(move);
+					}
+				}
+				// rook
+				if (op.getType() == 'r' || op.getType() == 'R') {
+					oppPossibleMoves = getMovesRook(op);
+					if (oppPossibleMoves.contains(move)) {
+						illegalMoves.add(move);
+					}
+				}
+				// knight
+				if (op.getType() == 'n' || op.getType() == 'N') {
+					oppPossibleMoves = getMovesKnight(op);
+					if (oppPossibleMoves.contains(move)) {
+						
+					}
+				}
+				// bishop
+				if (op.getType() == 'b' || op.getType() == 'B') {
+					oppPossibleMoves = getMovesBishop(op);
+					if (oppPossibleMoves.contains(move)) {
+						illegalMoves.add(move);
+					}
+				}
+				// queen
+				if (op.getType() == 'q' || op.getType() == 'Q') {
+					oppPossibleMoves = getMovesQueen(op);
+					if (oppPossibleMoves.contains(move)) {
+						illegalMoves.add(move);
+					}
+				}
+			}
+		}
+		
+		return illegalMoves;
 	}
 	
 	/*
