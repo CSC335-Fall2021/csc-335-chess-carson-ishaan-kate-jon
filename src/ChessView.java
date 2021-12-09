@@ -216,24 +216,24 @@ public class ChessView extends Application implements Observer{
         this.stage.show();
         
  		
- 		// Checks for both kings
- 		Piece bKing = controller.getModel().getBlackKing();
- 		Piece wKing = controller.getModel().getWhiteKing();
- 		if (controller.getModel().isCheckmate(bKing)) {
- 			final Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-			alert.setTitle("Message");
-			alert.setHeaderText("Message");
-			alert.setContentText("Black king is in checkmate, White has won!");
-			Platform.runLater(alert::showAndWait);
-			Platform.exit();
- 		} else if (controller.getModel().isCheckmate(wKing)) {
- 			final Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-			alert.setTitle("Message");
-			alert.setHeaderText("Message");
-			alert.setContentText("White king is in checkmate, Black has won!");
-			Platform.runLater(alert::showAndWait);
-			Platform.exit();
- 		}
+// 		// Checks for both kings
+// 		Piece bKing = controller.getModel().getBlackKing();
+// 		Piece wKing = controller.getModel().getWhiteKing();
+// 		if (controller.getModel().getPossibleMoves(player, player)) {
+// 			final Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+//			alert.setTitle("Message");
+//			alert.setHeaderText("Message");
+//			alert.setContentText("Black king is in checkmate, White has won!");
+//			Platform.runLater(alert::showAndWait);
+//			Platform.exit();
+// 		} else if (controller.getModel().isCheckmate(wKing)) {
+// 			final Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+//			alert.setTitle("Message");
+//			alert.setHeaderText("Message");
+//			alert.setContentText("White king is in checkmate, Black has won!");
+//			Platform.runLater(alert::showAndWait);
+//			Platform.exit();
+// 		}
  		
 	}
 
