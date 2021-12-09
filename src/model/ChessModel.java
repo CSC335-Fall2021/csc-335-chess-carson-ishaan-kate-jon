@@ -576,11 +576,69 @@ public class ChessModel extends Observable {
 		}
 	}
 	
+	/*
+	 * This function checks if the king is in check or not. It checks the king's color that is being
+	 * checked and sets an array list of pieces to the opposing pieces. Then it loops through each piece
+	 * and checks the piece's type to determine which getMoves to call to set the opposing possible moves to equal.
+	 * Then it checks if the opposing possible moves contains the king's spot returning true if it does, meaning 
+	 * the king is in check.
+	 */
+	public boolean isCheck(Piece king) {
+		ArrayList<Piece> oppPieces;
+		if (king.getColor() == 1) {
+			oppPieces = this.blackPieces;
+		} else {
+			oppPieces = this.whitePieces;
+		}
+		Move kingSpot = new Move(king.getFile(), king.getRank());
+		
+		for (Piece op : oppPieces) {
+			ArrayList<Move> oppPossibleMoves;
+			// pawn
+			if (op.getType() == 'p' || op.getType() == 'P') {
+				oppPossibleMoves = getMovesPawn(op);
+				if (oppPossibleMoves.contains(kingSpot)) {
+					return true;
+				}
+			}
+			// rook
+			if (op.getType() == 'r' || op.getType() == 'R') {
+				oppPossibleMoves = getMovesRook(op);
+				if (oppPossibleMoves.contains(kingSpot)) {
+					return true;
+				}
+			}
+			// knight
+			if (op.getType() == 'n' || op.getType() == 'N') {
+				oppPossibleMoves = getMovesKnight(op);
+				if (oppPossibleMoves.contains(kingSpot)) {
+					return true;
+				}
+			}
+			// bishop
+			if (op.getType() == 'b' || op.getType() == 'B') {
+				oppPossibleMoves = getMovesBishop(op);
+				if (oppPossibleMoves.contains(kingSpot)) {
+					return true;
+				}
+			}
+			// queen
+			if (op.getType() == 'q' || op.getType() == 'Q') {
+				oppPossibleMoves = getMovesQueen(op);
+				if (oppPossibleMoves.contains(kingSpot)) {
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+	
 	public boolean isCheckmate(Piece king) {
 		if (getFenString().equals(starterString)) {
 			return false;
 		} else {
 			ArrayList<Move> moves = getMovesKing(king);
+			
 			return moves.equals(null);
 		}
 	}
