@@ -633,14 +633,35 @@ public class ChessModel extends Observable {
 		return false;
 	}
 	
+	/*
+	 * This function checks if the king is in check. This is done by checking if
+	 * it is the beginning of the game. Then making a list of all possible moves by king and
+	 * making every move then calling isCheck to see if that move is putting king into check, 
+	 * returning false if king would not be in check after that move. Returns true, if all
+	 * moves are looped through and are all putting the king in check.
+	 */
 	public boolean isCheckmate(Piece king) {
 		if (getFenString().equals(starterString)) {
 			return false;
 		} else {
-			ArrayList<Move> moves = getMovesKing(king);
+			ArrayList<Move> moves = getMovesKing(king); // get all possible moves for king
+			if (moves.equals(null)) { // if no moves, return true
+				return true;
+			} else {
+				Move kingSpot = new Move(king.getFile(), king.getRank()); // save king cur spot
+				for (Move mv : moves) { // loop through every possible move king can make 
+					makeMove(kingSpot, mv); // make the move
+					if (isCheck(chessBoard[mv.getX()][mv.getY()])) { // use isCheck to see if new spot is illegal
+						makeMove(mv, kingSpot); // if move puts king in check, reverse the move made 
+					} else {
+						makeMove(mv, kingSpot); // else, reverse the move made for next move
+						return false;
+					}
+				}
+			}
 			
-			return moves.equals(null);
 		}
+		return true;
 	}
 	
 	// ------------------------- End of new untested movement logic ---------------------------------
