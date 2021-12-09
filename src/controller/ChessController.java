@@ -39,7 +39,7 @@ public class ChessController {
 		CurModel = new ChessModel(fenString);
 	}
 	
-	/*
+	/**
 	 * This method is put in place to return the current Model of the chess game
 	 * this method is used whenever additional information from the model is needed
 	 * within the view after setChanged and notifyObservers runs. This method takes 
@@ -49,7 +49,7 @@ public class ChessController {
 		return this.CurModel;
 	}
 
-	/*
+	/**
 	 * This method retrieves the current game in its fen-notation. This notation is
 	 * a universal language for chess and this method is used in most of this game's
 	 * core function. This method calls the model's getFenString() method and returns
@@ -59,7 +59,7 @@ public class ChessController {
 		return CurModel.getFenString();
 	}
 	
-	/*
+	/**
 	 * This method calls a getter function within the model and returns a boolean
 	 * value if the game is over or not. Since this will be saved as an instance 
 	 * variable within the model, only a getter function is necessary to retrieve
@@ -69,7 +69,7 @@ public class ChessController {
 		return CurModel.getIsGameOver();
 	}
 
-	/*
+	/**
 	 * This method is called within the view to make a move to the board. This method 
 	 * will create a move for the chess game given the parameters and sends a message 
 	 * to the other Socket within the running server. This is how the view is able to
@@ -81,7 +81,7 @@ public class ChessController {
 		sendMessage(message);
 	}
 	
-	/*
+	/**
 	 * This method is called within the view and its goal is to retrieve all of the 
 	 * possible moves the designated piece can make. This will be displayed within the
 	 * by physically changing the color of the tiles for each move adding a new handler 
@@ -91,7 +91,7 @@ public class ChessController {
 		return CurModel.getPossibleMoves(file, rank);
 	}
 	
-	/*
+	/**
 	 * This method is a basic server startup method. This method is run only for the user
 	 * who designated to be the server. It creates a SOCKET at port 4000 and establishes
 	 * a connection. The method will then wait until the user playing as CLIENT has also
@@ -119,7 +119,7 @@ public class ChessController {
 		}
 	}
 	
-	/*
+	/**
 	 * This is a method to return a puzzle within the various puzzles provided. Every one
 	 * of these puzzles are one move away from a checkMate and it is the user's goal to 
 	 * figure out what that move is 
@@ -129,7 +129,7 @@ public class ChessController {
 		return puzzles.get(i-1);
 	}
 	
-	/*
+	/**
 	 * This method runs only when the user designated for client clicks the client button. 
 	 * The server should have already been setup from the other user so all it should do is 
 	 * establish a connection and wait for the platform.runlater function
@@ -179,7 +179,7 @@ public class ChessController {
 		}
 	}
 	
-	/*
+	/**
 	 * This method is put in place to send a message to the other Socket within the current
 	 * connection. The parameter of this function is of type ChessMoveMessage and contains everything
 	 * needed to duplicate the runnind functions on each thread. 
