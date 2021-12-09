@@ -12,6 +12,14 @@ import model.ChessModel;
 import model.ChessMoveMessage;
 import model.Move;
 
+/**
+ * This class is put in place to connect the Chess view and the chess
+ * model to each other. The controller will call various methods within
+ * the model which will then notify its observer that it has changed. This
+ * class has 2 constructors, one for creating a new game and one for loading
+ * an existing game. If it is a new game, the controller will pass null through
+ * as the string to indicate whether to use the starter string. 
+ */
 public class ChessController {
 
 	private ChessModel CurModel;
@@ -22,36 +30,73 @@ public class ChessController {
 	ObjectOutputStream oos;
 	ObjectInputStream ois;
 
-	public ChessController() { // New Game
+	// Default Constructor
+	public ChessController() { 
 		this(null);
 	}
-
-	public ChessController(String fenString) { // Existing Game
+	// Paramaterized Constructor
+	public ChessController(String fenString) { 
 		CurModel = new ChessModel(fenString);
 	}
-
+	
+	/*
+	 * This method is put in place to return the current Model of the chess game
+	 * this method is used whenever additional information from the model is needed
+	 * within the view after setChanged and notifyObservers runs. This method takes 
+	 * in no parameters and returns the instance variable for the model.
+	 */
 	public ChessModel getModel() { // Retrieve chess Model
 		return this.CurModel;
 	}
 
+	/*
+	 * This method retrieves the current game in its fen-notation. This notation is
+	 * a universal language for chess and this method is used in most of this game's
+	 * core function. This method calls the model's getFenString() method and returns
+	 * the string that the method generates.
+	 */
 	public String getFenString() { // Retrieve encoded board
 		return CurModel.getFenString();
 	}
 	
+	/*
+	 * This method calls a getter function within the model and returns a boolean
+	 * value if the game is over or not. Since this will be saved as an instance 
+	 * variable within the model, only a getter function is necessary to retrieve
+	 * the desired value.
+	 */
 	public boolean getIsGameOver() {
 		return CurModel.getIsGameOver();
 	}
 
+	/*
+	 * This method is called within the view to make a move to the board. This method 
+	 * will create a move for the chess game given the parameters and sends a message 
+	 * to the other Socket within the running server. This is how the view is able to
+	 * update for each individual user.
+	 */
 	public void makePlayerMove(Move oldMove, Move newMove) { // Perform a player Move
 		CurModel.makeMove(oldMove, newMove);
 		ChessMoveMessage message = new ChessMoveMessage(oldMove, newMove);
 		sendMessage(message);
 	}
 	
+	/*
+	 * This method is called within the view and its goal is to retrieve all of the 
+	 * possible moves the designated piece can make. This will be displayed within the
+	 * by physically changing the color of the tiles for each move adding a new handler 
+	 * to it. This new handler will then be sent through the makePlayerMove
+	 */
 	public ArrayList<Move> getPossibleMoves(int file, int rank) {
 		return CurModel.getPossibleMoves(file, rank);
 	}
 	
+	/*
+	 * This method is a basic server startup method. This method is run only for the user
+	 * who designated to be the server. It creates a SOCKET at port 4000 and establishes
+	 * a connection. The method will then wait until the user playing as CLIENT has also
+	 * connected to the game.
+	 */
 	public void startServer() {
 		try {
 			ServerSocket server = new ServerSocket(4000);
@@ -73,11 +118,22 @@ public class ChessController {
 			System.err.println("Something went wrong with the network! " + e.getMessage());
 		}
 	}
+	
+	/*
+	 * This is a method to return a puzzle within the various puzzles provided. Every one
+	 * of these puzzles are one move away from a checkMate and it is the user's goal to 
+	 * figure out what that move is 
+	 */
 	public String getPuzzleFenString(int i) {
 		ArrayList<String> puzzles = CurModel.puzzles();
 		return puzzles.get(i-1);
 	}
 	
+	/*
+	 * This method runs only when the user designated for client clicks the client button. 
+	 * The server should have already been setup from the other user so all it should do is 
+	 * establish a connection and wait for the platform.runlater function
+	 */
 	public void startClient() {
 		try {
 			connection = new Socket("localhost", 4000);
@@ -123,6 +179,11 @@ public class ChessController {
 		}
 	}
 	
+	/*
+	 * This method is put in place to send a message to the other Socket within the current
+	 * connection. The parameter of this function is of type ChessMoveMessage and contains everything
+	 * needed to duplicate the runnind functions on each thread. 
+	 */
 	private void sendMessage(ChessMoveMessage msg) {
 		if(!isConnected) { return; }
 		
