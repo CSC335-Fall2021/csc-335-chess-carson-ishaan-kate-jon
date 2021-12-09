@@ -111,6 +111,8 @@ public class ChessView extends Application implements Observer{
 		this.canClick = controller.getModel().isMyTurn();
 		buildBoard(stage, curFenRep);
 		setupHandlersOne();
+
+		
 	}
 	
 	public void setPlayer(int player) {
@@ -679,12 +681,16 @@ public class ChessView extends Application implements Observer{
 					}
 				} else {
 					controller.makePlayerMove(prevPosition, newPosition);
+					
 				}
 				if (getPlayer() == 1 || getPlayer() == 2) {
 					setCanClicked(false);
 				}
 				else if (getPlayer() == 0) {
 					setCanClicked(true);
+				}
+				if (!controller.getIsConnected()) {
+					controller.makeRandomMove();
 				}
 			});
 		}
