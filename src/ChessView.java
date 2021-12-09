@@ -50,6 +50,7 @@ public class ChessView extends Application implements Observer{
 	public boolean canClick = true;
 	private Move prevPosition;
 	private PathTransition pathTransitionAnimation;
+	private boolean localPlay = false;
 
 			
 	/**
@@ -86,7 +87,7 @@ public class ChessView extends Application implements Observer{
 
 	*/
 	private void setupHandlersOne() {
-		if (!this.canClick) {
+		if (!this.canClick && !localPlay) {
 			return;
 		}
 		ObservableList<Node> stackList = chessGrid.getChildren();
@@ -108,6 +109,14 @@ public class ChessView extends Application implements Observer{
 		this.canClick = controller.getModel().isMyTurn();
 		buildBoard(stage, curFenRep);
 		setupHandlersOne();
+	}
+	
+	public void setPlayer(int player) {
+		this.player = player;
+	}
+	
+	public int getPlayer() {
+		return this.player;
 	}
 	
 	/**
@@ -416,24 +425,39 @@ public class ChessView extends Application implements Observer{
 		
 		Button startServer = new Button("Start Server");
 		Button startClient = new Button("Start Client");
+		Button playLocal   = new Button("Play Local");
 		
 		startServer.setOnAction(event -> {
+			this.player = 1;
+			this.localPlay = false;
 			startClient.setDisable(true);
 			startServer.setDisable(true);
+			playLocal.setDisable(true);
 			stage.setTitle("SERVER CHESS (Player 1)");
 			controller.startServer();
 		});
 		
 		startClient.setOnAction(event -> {
+			this.player = 2;
+			this.localPlay = false;
 			startClient.setDisable(true);
 			startServer.setDisable(true);
+			playLocal.setDisable(true);
 			stage.setTitle("CLIENT CHESS (Player 2)");
 			canClick = false;
 			controller.startClient();
 		});
+		playLocal.setOnAction(event -> {
+			this.player = 0;
+			this.localPlay = true;
+			startClient.setDisable(true);
+			startServer.setDisable(true);
+			playLocal.setDisable(true);
+		});
 		
 		netVbox.getChildren().add(startServer);
 		netVbox.getChildren().add(startClient);
+		netVbox.getChildren().add(playLocal);
 		netVbox.setSpacing(10);
 		return netVbox;
 	}
@@ -643,7 +667,12 @@ public class ChessView extends Application implements Observer{
 				} else {
 					controller.makePlayerMove(prevPosition, newPosition);
 				}
-				setCanClicked(false);
+				if (getPlayer() == 1 || getPlayer() == 2) {
+					setCanClicked(false);
+				}
+				else if (getPlayer() == 0) {
+					setCanClicked(true);
+				}
 			});
 		}
 		
