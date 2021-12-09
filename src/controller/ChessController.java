@@ -94,7 +94,7 @@ public class ChessController {
 
 	
 	public boolean getPuzzleWin() {
-		return false;
+		return this.puzzleWin;
 	}
 	
 	public void makePuzzleMove(Move oldMove, Move newMove) { // Perform a player Move
