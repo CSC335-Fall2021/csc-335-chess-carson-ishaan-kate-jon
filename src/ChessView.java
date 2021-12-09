@@ -49,7 +49,18 @@ public class ChessView extends Application implements Observer{
 	private PathTransition pathTransitionAnimation;
 
 			
-
+	/**
+	* Starts the GUI view of the chess board and creates the controller, model,
+	* builds the board, and calls handler setup functions
+	*
+	* @param  Stage primaryStage
+	* @return  void
+	*/
+	
+	public static void main(String[] args) {
+		launch(args);
+	}
+	
 	@Override
 	public void start(Stage primaryStage) {
 		try {	
@@ -65,6 +76,12 @@ public class ChessView extends Application implements Observer{
 		}
 	}
 	
+	/**
+	* Helps setup the handlers for mouse events when a piece is clicked
+	*
+	* @return void
+
+	*/
 	private void setupHandlersOne() {
 		if (!this.canClick) {
 			return;
@@ -77,7 +94,11 @@ public class ChessView extends Application implements Observer{
 		}
 		
 	}
-
+	/**
+	* Updates the board to display the current piece setup
+	* 
+	* @return   void
+	*/
 	@Override
 	public void update(Observable arg0, Object arg1) {
 		String curFenRep = (String) arg1;
@@ -85,7 +106,15 @@ public class ChessView extends Application implements Observer{
 		buildBoard(stage, curFenRep);
 		setupHandlersOne();
 	}
-
+	
+	/**
+	* Will accept a stage and fen-formatted string, and builds a board based
+	* on the fen string setup passed in
+	*
+	* @param  Stage stage
+	* @param  String fenRap
+	* @return   void
+	*/
 	private void buildBoard(Stage stage, String fenRep) {
 		TabPane tabPane = new TabPane();
 		if (this.stage == null) {
@@ -173,6 +202,12 @@ public class ChessView extends Application implements Observer{
         this.stage.show();
 	}
 
+	/**
+	* Creates a Vbox of the puzzle options (1-6) and creates buttons with events
+	* associated with them that will create a new board when pressed with the puzzle
+	*
+	* @return    Node
+	*/
 	private Node createPuzzle() {
 		VBox vbox = new VBox();
 		
@@ -234,6 +269,14 @@ public class ChessView extends Application implements Observer{
 	
 	}
 
+	/**
+	* Returns a string unicode value based on the char that is passed in. The char
+	* will come from a fen-formatted string and will determine what piece should be
+	* on the part of the board
+	*
+	* @param  char piece
+	* @return      String
+	*/
 	private String getUnicodeValue(char piece) {
 		if (piece == 'p') {
 			return "\u265F";
@@ -276,6 +319,15 @@ public class ChessView extends Application implements Observer{
 		}
 	}
 
+	/**
+	* Will take a stage as a parameter and create a tab where you can customize
+	* the color of the chess board. The user can input either color strings or hex
+	* values and can only fill in one input field or both. If the color input is invalid
+	* the color will not change.
+	*
+	* @param  Stage stage
+	* @return   Vbox
+	*/
 	private VBox CreateCustomization(Stage stage) {
 		VBox vbox = new VBox();
 		
@@ -303,6 +355,12 @@ public class ChessView extends Application implements Observer{
 		return vbox;
 	}
 
+	/**
+	* Creates the tab menu where the network setup happens. There is two buttons: 
+	* "Start Client" and "Start Server"
+	* 
+	* @return    Vbox
+	*/
 	private VBox setupNetwork() {
 		VBox netVbox = new VBox();
 		
@@ -330,6 +388,16 @@ public class ChessView extends Application implements Observer{
 		return netVbox;
 	}
 	
+	/**
+	* Changes the colors of the board by performing checks for hex value and color strings and
+	* changes the global values for color1 and color2 accordingly. if input is invalid, the
+	* color will not be changed
+	*
+	* @param  text1
+	* @param  text2
+	* @param stage
+	* @return    void
+	*/
 	private void ChangeColors(String text1, String text2, Stage stage) {
 		try {
 			Color temp1;
@@ -358,16 +426,18 @@ public class ChessView extends Application implements Observer{
 		buildBoard(stage, controller.getFenString());
 		setupHandlersOne();
 	}
-
-	public static void main(String[] args) {
-		launch(args);
-	}
 	
+	/**
+	* Sets whether or not the pieces on this board are clickable
+	*
+	* @param  boolean val
+	* @return      void
+	*/
 	public void setCanClicked(boolean val) {
 		this.canClick = val;
 	}
 	
-	/*
+	/**
 	 * This class implements the first click of the turn, this will display to the 
 	 * user all possible moves they can make by highlighting the certain positions
 	 * on the board. This will be done with a helper method to update the handlers
@@ -402,7 +472,15 @@ public class ChessView extends Application implements Observer{
 				}
 			}
 		}
-
+		
+		/**
+		* Setups the mouse events for making a move on the chess board and ensuring
+		* that it is a valid move
+		*
+		* @param  ArrayList<Move> moveLst
+		* @param  StackPane curPane
+		* @return      void
+		*/
 		private void setupHandlers2(ArrayList<Move> moveLst, StackPane curPane) {
 			if (moveLst == null) {
 				buildBoard(stage, controller.getFenString());
@@ -432,7 +510,21 @@ public class ChessView extends Application implements Observer{
 			
 		}
 	}
-	private void startPathAnimation(Object object, int oldX, int oldY, int newX, int newY) {
+	
+	/**
+	* Sets up the animation of piece moving and assigns the animation to a global variable
+	* to setup the delay before the move is added to the model. Parameters are the piece to be 
+	* moved, the old x coordinate of the piece, the old y coordinate, the new x coordinate
+	* and the new y coordinate of the piece  
+	*
+	* @param  Object pieceToMove
+	* @param  int oldX
+	* @param  int oldY
+	* @param  int newX
+	* @param  int newY
+	* @return      void
+	*/
+	private void setupPathAnimation(Object pieceToMove, int oldX, int oldY, int newX, int newY) {
 		
 		Path path = new Path();
         path.getElements().add(new MoveTo(oldX, oldY));
@@ -440,19 +532,26 @@ public class ChessView extends Application implements Observer{
         PathTransition pathTransition = new PathTransition();
         pathTransition.setDuration(Duration.millis(1000));
         pathTransition.setPath(path);
-        pathTransition.setNode((Node) object);
+        pathTransition.setNode((Node) pieceToMove);
         pathTransition.setCycleCount(1);
         pathTransition.setAutoReverse(true);
         pathTransitionAnimation = pathTransition;
 	}
 	
-	/*
+	/**
 	 * This class implements the move logic. This handler will be placed on a node 
 	 * whenever there is a possible move to be made, therefore when this handle method
 	 * runs, it will send a message to the model making a logical wove within the game
 	 */
 	private class MouseEvent2 implements EventHandler<MouseEvent> {
 
+		/**
+		* Sets up the animation of piece moving and plays the animation, performs a delay to make sure
+		* the animation is visible. Adds the move to the model.
+		*
+		* @param  MouseEvent arg0
+		* @return      void
+		*/
 		@Override
 		public void handle(MouseEvent arg0) {
 			int oldX = 0;
@@ -470,7 +569,7 @@ public class ChessView extends Application implements Observer{
 			
 			StackPane curPane1 = (StackPane)arg0.getSource();
 			Move newPosition = new Move(chessGrid.getColumnIndex(curPane1), chessGrid.getRowIndex(curPane1));
-			startPathAnimation(node, oldX, oldY, newPosition.getX(), newPosition.getY());
+			setupPathAnimation(node, oldX, oldY, newPosition.getX(), newPosition.getY());
 			pathTransitionAnimation.play();
 			pathTransitionAnimation.setOnFinished(e -> {
 				controller.makePlayerMove(prevPosition, newPosition);
