@@ -186,22 +186,40 @@ public class ChessView extends Application implements Observer{
 		Button puzzle6 = new Button("Puzzle 6");
 		
 		puzzle1.setOnAction(event -> {
-			buildBoard(stage, controller.getPuzzleFenString(1));
+			controller = new ChessController(controller.getPuzzleFenString(1));
+			controller.getModel().addObserver(this);
+			buildBoard(new Stage(), controller.getFenString());
+			setupHandlersOne();
 		});
 		puzzle2.setOnAction(event -> {
-			buildBoard(stage, controller.getPuzzleFenString(2));
+			controller = new ChessController(controller.getPuzzleFenString(2));
+			controller.getModel().addObserver(this);
+			buildBoard(new Stage(), controller.getFenString());
+			setupHandlersOne();
 		});
 		puzzle3.setOnAction(event -> {
-			buildBoard(stage, controller.getPuzzleFenString(3));
+			controller = new ChessController(controller.getPuzzleFenString(3));
+			controller.getModel().addObserver(this);
+			buildBoard(new Stage(), controller.getFenString());
+			setupHandlersOne();
 		});
 		puzzle4.setOnAction(event -> {	
-			buildBoard(stage, controller.getPuzzleFenString(4));
+			controller = new ChessController(controller.getPuzzleFenString(4));
+			controller.getModel().addObserver(this);
+			buildBoard(new Stage(), controller.getFenString());
+			setupHandlersOne();
 		});
 		puzzle5.setOnAction(event -> {
-			buildBoard(stage, controller.getPuzzleFenString(5));
+			controller = new ChessController(controller.getPuzzleFenString(5));
+			controller.getModel().addObserver(this);
+			buildBoard(new Stage(), controller.getFenString());
+			setupHandlersOne();
 		});
 		puzzle6.setOnAction(event -> {	
-			buildBoard(stage, controller.getPuzzleFenString(6));
+			controller = new ChessController(controller.getPuzzleFenString(6));
+			controller.getModel().addObserver(this);
+			buildBoard(new Stage(), controller.getFenString());
+			setupHandlersOne();
 		});
 		
 		vbox.getChildren().add(label);
