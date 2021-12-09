@@ -6,11 +6,13 @@ import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.Random;
 
 import javafx.application.Platform;
 import model.ChessModel;
 import model.ChessMoveMessage;
 import model.Move;
+import model.Piece;
 
 /**
  * This class is put in place to connect the Chess view and the chess
@@ -265,6 +267,32 @@ public class ChessController {
 	
 	public boolean isPuzzle() {
 		return isPuzzle;
+	}
+	
+	public boolean getIsConnected() {
+		return isConnected;
+	}
+	
+	/**
+	 * This function picks a random move to make for AI locally. It uses Random to 
+	 * pick a random piece out of the black pieces and checks if that piece has possible moves.
+	 * It adds all possible moves into a list of moves and uses random to pick one from that and makes
+	 * the move.
+	 */
+	public void makeRandomMove() {
+		while (true) {
+			Random random = new Random();
+			int x = random.nextInt(16);
+			Piece p = CurModel.blackPieces.get(x);
+			if (!CurModel.getPossibleMoves(p.getFile(), p.getRank()).equals(null)) {
+				ArrayList<Move> availableMoves = CurModel.getPossibleMoves(p.getFile(), p.getRank());
+				Random random1 = new Random();
+				int y = random1.nextInt(availableMoves.size());
+				Move oldSpot = new Move(p.getFile(), p.getRank());
+				Move newSpot = new Move(availableMoves.get(y).getX(), availableMoves.get(y).getY());
+				makePlayerMove(oldSpot, newSpot);
+			}
+		}
 	}
 	
 
