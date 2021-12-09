@@ -345,6 +345,10 @@ public class ChessView extends Application implements Observer{
 		launch(args);
 	}
 	
+	public void setCanClicked(boolean val) {
+		this.canClick = val;
+	}
+	
 	/*
 	 * This class implements the first click of the turn, this will display to the 
 	 * user all possible moves they can make by highlighting the certain positions
@@ -450,8 +454,10 @@ public class ChessView extends Application implements Observer{
 			Move newPosition = new Move(chessGrid.getColumnIndex(curPane1), chessGrid.getRowIndex(curPane1));
 			startPathAnimation(node, oldX, oldY, newPosition.getX(), newPosition.getY());
 			pathTransitionAnimation.play();
-			pathTransitionAnimation.setOnFinished(e -> controller.makePlayerMove(prevPosition, newPosition));
-			canClick = false;
+			pathTransitionAnimation.setOnFinished(e -> {
+				controller.makePlayerMove(prevPosition, newPosition);
+				setCanClicked(false);
+			});
 		}
 		
 	}
