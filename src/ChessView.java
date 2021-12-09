@@ -36,6 +36,7 @@ import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import model.Move;
+import model.Piece;
 
 public class ChessView extends Application implements Observer{
 	
@@ -68,6 +69,7 @@ public class ChessView extends Application implements Observer{
 	@Override
 	public void start(Stage primaryStage) {
 		try {	
+			this.localPlay = true;
 			controller = new ChessController();
 			controller.getModel().addObserver(this);
 			
@@ -193,16 +195,6 @@ public class ChessView extends Application implements Observer{
 			}
 		}
 		
-		// Checking for end of game
-		boolean whiteCheck = false;
-		boolean blackCheck = false;
-		
-		// Checks for both kings
-		
-		
-		// If whiteCheck, alert White has won
-		// If blackCheck, alert black has won
-		
 		this.stage = stage;
 		this.chessGrid = gridpane;
 
@@ -222,6 +214,27 @@ public class ChessView extends Application implements Observer{
 		
         this.stage.setScene(scene);
         this.stage.show();
+        
+ 		
+// 		// Checks for both kings
+// 		Piece bKing = controller.getModel().getBlackKing();
+// 		Piece wKing = controller.getModel().getWhiteKing();
+// 		if (controller.getModel().getPossibleMoves(player, player)) {
+// 			final Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+//			alert.setTitle("Message");
+//			alert.setHeaderText("Message");
+//			alert.setContentText("Black king is in checkmate, White has won!");
+//			Platform.runLater(alert::showAndWait);
+//			Platform.exit();
+// 		} else if (controller.getModel().isCheckmate(wKing)) {
+// 			final Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+//			alert.setTitle("Message");
+//			alert.setHeaderText("Message");
+//			alert.setContentText("White king is in checkmate, Black has won!");
+//			Platform.runLater(alert::showAndWait);
+//			Platform.exit();
+// 		}
+ 		
 	}
 
 	/**

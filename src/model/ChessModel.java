@@ -420,7 +420,30 @@ public class ChessModel extends Observable {
 		}
 	}
 	
-	private ArrayList<Move> getMovesKing(Piece curPiece) {
+	public ArrayList<Move> getMovesKing(Piece king) {
+		ArrayList<Move> moves = getMovesKingHelp(king); // get all possible moves for king
+		if (moves.equals(null)) { // if no moves, return true
+			return null;
+		} else {
+			Move kingSpot = new Move(king.getFile(), king.getRank()); // save king cur spot
+			for (Move mv : moves) { // loop through every possible move king can make 
+				Piece movePiece = chessBoard[mv.getY()][mv.getX()];
+				isCheckmateHelper(kingSpot, mv); // make the move
+				if (isCheck(chessBoard[mv.getX()][mv.getY()])) { // use isCheck to see if new spot is illegal
+					moves.remove(mv);
+					isCheckmateHelper(mv, kingSpot); // if move puts king in check, reverse the move made 
+					chessBoard[mv.getY()][mv.getX()] = movePiece;
+				} else {
+					isCheckmateHelper(mv, kingSpot); // else, reverse the move made for next move
+					chessBoard[mv.getY()][mv.getX()] = movePiece;
+				}
+			}
+		}
+			
+		return moves;
+	}
+	
+	private ArrayList<Move> getMovesKingHelp(Piece curPiece) {
 		ArrayList<Move> kingMoveSet = new ArrayList<Move>();
 		int pieceRow = curPiece.getRank();
 		int pieceCol = curPiece.getFile();
@@ -514,12 +537,12 @@ public class ChessModel extends Observable {
 			}
 		}
 		ArrayList<Move> retArr = new ArrayList<Move>(kingMoveSet);
-		printMoves(retArr);
+//		printMoves(retArr);
 		if (retArr.size() == 0) {
-			this.isGameOver = isCheckmate(curPiece); // if king has no moves, call isCheckmate.
+//			this.isGameOver = isCheckmate(curPiece); // if king has no moves, call isCheckmate.
 			return null;
 		} else {
-			this.isGameOver = false;
+//			this.isGameOver = false;
 			return retArr;	
 		}
 	}
@@ -642,7 +665,7 @@ public class ChessModel extends Observable {
 			oppPieces = this.whitePieces;
 		}
 		//Move kingSpot = new Move(king.getFile(), king.getRank());
-		ArrayList<Move> kingMoves = getMovesKing(king);
+		ArrayList<Move> kingMoves = getMovesKingHelp(king);
 		for (Move move : kingMoves) {
 			for (Piece op : oppPieces) {
 				ArrayList<Move> oppPossibleMoves;
@@ -698,7 +721,7 @@ public class ChessModel extends Observable {
 		if (getFenString().equals(starterString)) {
 			return false;
 		} else {
-			ArrayList<Move> moves = getMovesKing(king); // get all possible moves for king
+			ArrayList<Move> moves = getMovesKingHelp(king); // get all possible moves for king
 			if (moves.equals(null)) { // if no moves, return true
 				return true;
 			} else {
@@ -814,6 +837,24 @@ public class ChessModel extends Observable {
 
 	public String getFenString() {
 		return getFenString(this.chessBoard);
+	}
+	
+	public Piece getWhiteKing() {
+		for (Piece piece : this.whitePieces) {
+			if (piece.getType() == 'K') {
+				return piece;
+			}
+		}
+		return null;
+	}
+	
+	public Piece getBlackKing() {
+		for (Piece piece : this.blackPieces) {
+			if (piece.getType() == 'k') {
+				return piece;
+			}
+		}
+		return null;
 	}
 
 	public String getFenString(Piece[][] curboard) {
