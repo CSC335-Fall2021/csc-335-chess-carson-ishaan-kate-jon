@@ -21,6 +21,7 @@ import model.Piece;
  * class has 2 constructors, one for creating a new game and one for loading
  * an existing game. If it is a new game, the controller will pass null through
  * as the string to indicate whether to use the starter string. 
+ 
  */
 public class ChessController {
 
